@@ -48,6 +48,8 @@ class CTrack {
 		void readPoints(const char* filename);
 		void writePoints(const char* filename);
 
+        void draw();
+
 	public:
 		// rather than have generic objects, we make a special case for these few
 		// objects that we know that all implementations are going to need and that

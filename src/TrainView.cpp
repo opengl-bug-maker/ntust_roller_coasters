@@ -212,8 +212,8 @@ void TrainView::draw()
 	setProjection();		// put the code to set up matrices here
 
 	//######################################################################
-	// TODO: 
-	// you might want to set the lighting up differently. if you do, 
+	// TODO:
+	// you might want to set the lighting up differently. if you do,
 	// we need to set up the lights AFTER setting up the projection
 	//######################################################################
 	// enable the lighting
@@ -260,7 +260,7 @@ void TrainView::draw()
 	// now draw the ground plane
 	//*********************************************************************
 	// set to opengl fixed pipeline(use opengl 1.x draw function)
-	glUseProgram(0);
+//	glUseProgram(0);
 
 	setupFloor();
 	glDisable(GL_LIGHTING);
@@ -366,6 +366,10 @@ void TrainView::drawStuff(bool doingShadows)
 	// call your own track drawing code
 	//####################################################################
 
+    if (!doingShadows) {
+        glColor3ub(240, 60, 60);
+    }
+    m_pTrack->draw();
 #ifdef EXAMPLE_SOLUTION
 	drawTrack(this, doingShadows);
 #endif
@@ -381,6 +385,11 @@ void TrainView::drawStuff(bool doingShadows)
 		drawTrain(this, doingShadows);
 #endif
 }
+
+void TrainView::drawTrack(bool doingShadows) {
+
+}
+
 
 // 
 //************************************************************************

@@ -66,6 +66,8 @@ class TrainView : public Fl_Gl_Window
 		// we're drawing shadows (no colors, for example)
 		void drawStuff(bool doingShadows=false);
 
+        void drawTrack(bool doingShadows=false);
+
 		// setup the projection - assuming that the projection stack has been
 		// cleared for you
 		void setProjection();

@@ -25,7 +25,9 @@
 *************************************************************************/
 
 #include "Track.H"
+#include "Utilities/3dUtils.h"
 
+#include <GL/gl.h>
 #include <FL/fl_ask.h>
 
 //****************************************************************************
@@ -175,4 +177,124 @@ writePoints(const char* filename)
 				points[i].orient.x, points[i].orient.y, points[i].orient.z);
 		fclose(fp);
 	}
+}
+
+void CTrack::draw() {
+
+    //Track
+    for(int i = 0; i < points.size(); i++){
+        ControlPoint now = points[i];
+        ControlPoint next = points[(i+1)%points.size()];
+        Pnt3f Pos = (now.pos + next.pos) * 0.5;
+        Pnt3f minus = (next.pos + now.pos * -1);
+        Pnt3f Size(1, (minus * 0.5).length(), 1);
+
+        glPushMatrix();
+        glTranslatef(Pos.x,Pos.y,Pos.z);
+
+        float theta1 = -radiansToDegrees(atan2(minus.z,minus.x));
+        glRotatef(theta1,0,1,0);
+        float theta2 = -radiansToDegrees(acos(minus.y));
+        glRotatef(theta2,0,0,1);
+
+        glBegin(GL_QUADS);
+            glNormal3f( 0,0,1);
+            glVertex3f( Size.x, Size.y, Size.z);
+            glVertex3f(-Size.x, Size.y, Size.z);
+            glVertex3f(-Size.x,-Size.y, Size.z);
+            glVertex3f( Size.x,-Size.y, Size.z);
+
+            glNormal3f( 0, 0, -1);
+            glVertex3f( Size.x, Size.y, -Size.z);
+            glVertex3f( Size.x,-Size.y, -Size.z);
+            glVertex3f(-Size.x,-Size.y, -Size.z);
+            glVertex3f(-Size.x, Size.y, -Size.z);
+
+            glNormal3f( 0,1,0);
+            glVertex3f( Size.x,Size.y, Size.z);
+            glVertex3f(-Size.x,Size.y, Size.z);
+            glVertex3f(-Size.x,Size.y,-Size.z);
+            glVertex3f( Size.x,Size.y,-Size.z);
+
+
+            glNormal3f( 0,-1,0);
+            glVertex3f( Size.x,-Size.y, Size.z);
+            glVertex3f(-Size.x,-Size.y, Size.z);
+            glVertex3f(-Size.x,-Size.y,-Size.z);
+            glVertex3f( Size.x,-Size.y,-Size.z);
+
+            glNormal3f( 1,0,0);
+            glVertex3f( Size.x, Size.y, Size.z);
+            glVertex3f( Size.x,-Size.y, Size.z);
+            glVertex3f( Size.x,-Size.y,-Size.z);
+            glVertex3f( Size.x, Size.y,-Size.z);
+
+            glNormal3f(-1,0,0);
+            glVertex3f(-Size.x, Size.y, Size.z);
+            glVertex3f(-Size.x, Size.y,-Size.z);
+            glVertex3f(-Size.x,-Size.y,-Size.z);
+            glVertex3f(-Size.x,-Size.y, Size.z);
+        glEnd();
+        glPopMatrix();
+    }
+
+
+
+    //Train
+    Pnt3f trainBodySize(3, 10, 3);
+    int nowPos = trainU, nextPos = (nowPos + 1) % points.size();
+    float midPoint = trainU - nowPos;
+    Pnt3f trainPos = points[nowPos].pos * (1 - midPoint) + points[nextPos].pos * midPoint;
+    trainPos = trainPos + Pnt3f(0, 4, 0);
+
+    Pnt3f TrainDir = (points[nextPos].pos + points[nowPos].pos * -1);
+
+
+    glPushMatrix();
+    glTranslatef(trainPos.x,trainPos.y,trainPos.z);
+
+    float theta1 = -radiansToDegrees(atan2(TrainDir.z,TrainDir.x));
+    glRotatef(theta1,0,1,0);
+    float theta2 = -radiansToDegrees(acos(TrainDir.y));
+    glRotatef(theta2,0,0,1);
+
+    glBegin(GL_QUADS);
+    glNormal3f( 0,0,1);
+    glVertex3f( trainBodySize.x, trainBodySize.y, trainBodySize.z);
+    glVertex3f(-trainBodySize.x, trainBodySize.y, trainBodySize.z);
+    glVertex3f(-trainBodySize.x,-trainBodySize.y, trainBodySize.z);
+    glVertex3f( trainBodySize.x,-trainBodySize.y, trainBodySize.z);
+
+    glNormal3f( 0, 0, -1);
+    glVertex3f( trainBodySize.x, trainBodySize.y, -trainBodySize.z);
+    glVertex3f( trainBodySize.x,-trainBodySize.y, -trainBodySize.z);
+    glVertex3f(-trainBodySize.x,-trainBodySize.y, -trainBodySize.z);
+    glVertex3f(-trainBodySize.x, trainBodySize.y, -trainBodySize.z);
+
+    glNormal3f( 0,1,0);
+    glVertex3f( trainBodySize.x,trainBodySize.y, trainBodySize.z);
+    glVertex3f(-trainBodySize.x,trainBodySize.y, trainBodySize.z);
+    glVertex3f(-trainBodySize.x,trainBodySize.y,-trainBodySize.z);
+    glVertex3f( trainBodySize.x,trainBodySize.y,-trainBodySize.z);
+
+
+    glNormal3f( 0,-1,0);
+    glVertex3f( trainBodySize.x,-trainBodySize.y, trainBodySize.z);
+    glVertex3f(-trainBodySize.x,-trainBodySize.y, trainBodySize.z);
+    glVertex3f(-trainBodySize.x,-trainBodySize.y,-trainBodySize.z);
+    glVertex3f( trainBodySize.x,-trainBodySize.y,-trainBodySize.z);
+
+    glNormal3f( 1,0,0);
+    glVertex3f( trainBodySize.x, trainBodySize.y, trainBodySize.z);
+    glVertex3f( trainBodySize.x,-trainBodySize.y, trainBodySize.z);
+    glVertex3f( trainBodySize.x,-trainBodySize.y,-trainBodySize.z);
+    glVertex3f( trainBodySize.x, trainBodySize.y,-trainBodySize.z);
+
+    glNormal3f(-1,0,0);
+    glVertex3f(-trainBodySize.x, trainBodySize.y, trainBodySize.z);
+    glVertex3f(-trainBodySize.x, trainBodySize.y,-trainBodySize.z);
+    glVertex3f(-trainBodySize.x,-trainBodySize.y,-trainBodySize.z);
+    glVertex3f(-trainBodySize.x,-trainBodySize.y, trainBodySize.z);
+    glEnd();
+    glPopMatrix();
 }
