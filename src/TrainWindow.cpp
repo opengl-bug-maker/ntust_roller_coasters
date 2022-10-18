@@ -36,7 +36,6 @@
 #include "CallBacks.H"
 
 
-
 //************************************************************************
 //
 // * Constructor
@@ -213,4 +212,17 @@ advanceTrain(float dir)
 	if (world.trainU > nct) world.trainU -= nct;
 	if (world.trainU < 0) world.trainU += nct;
 #endif
+
+    if (arcLength->value()) {
+//        float vel = ew.physics->value() ? physicsSpeed(this) : dir * (float)speed->value();
+        float vel = dir * (float)speed->value();
+        //todo : v to version arcLen
+//        m_Track.trainU += arclenVtoV(m_Track.trainU, vel, this);
+    } else {
+        m_Track.trainU +=  dir * ((float)speed->value() * .1f);
+    }
+
+    float nct = static_cast<float>(m_Track.points.size());
+    if (m_Track.trainU > nct) m_Track.trainU -= nct;
+    if (m_Track.trainU < 0) m_Track.trainU += nct;
 }
