@@ -25,6 +25,8 @@
 *************************************************************************/
 #pragma once
 
+class TrainWindow;
+
 #include <vector>
 
 using std::vector; // avoid having to say std::vector all of the time
@@ -48,9 +50,14 @@ class CTrack {
 		void readPoints(const char* filename);
 		void writePoints(const char* filename);
 
-        void draw(bool doingShadows, bool arc);
+        void draw(bool doingShadows, TrainWindow* tw);
+
+        vector<ControlPoint> (CTrack::*ComputePointsFunc[3])(int);
 
         vector<ControlPoint> ComputeVirtualPoints();
+        vector<ControlPoint> BspLinePoints(int checkPointsCount);
+        vector<ControlPoint> LinearPoints(int checkPointsCount);
+
         vector<ControlPoint> FixedArcPoints(const vector<ControlPoint>& vPoints, float minLength, float maxLength);
         void DrawTrack(const vector<ControlPoint>& trackPoints, bool doingShadows);
 	public:

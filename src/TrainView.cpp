@@ -369,7 +369,7 @@ void TrainView::drawStuff(bool doingShadows)
     if (!doingShadows) {
         glColor3ub(240, 60, 60);
     }
-    m_pTrack->draw(doingShadows, tw->arcLength->value());
+    m_pTrack->draw(doingShadows, tw);
 #ifdef EXAMPLE_SOLUTION
 	drawTrack(this, doingShadows);
 #endif

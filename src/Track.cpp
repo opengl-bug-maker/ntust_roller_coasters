@@ -26,6 +26,7 @@
 
 #include "Track.H"
 #include "Utilities/3dUtils.h"
+#include "TrainWindow.H"
 
 #include <GL/gl.h>
 #include <FL/fl_ask.h>
@@ -40,6 +41,9 @@ CTrack() : trainU(0)
 //============================================================================
 {
 	resetPoints();
+    ComputePointsFunc[0] = &CTrack::LinearPoints;
+    ComputePointsFunc[1] = &CTrack::BspLinePoints;
+    ComputePointsFunc[2] = &CTrack::BspLinePoints;
 }
 
 //****************************************************************************
@@ -255,10 +259,12 @@ void DrawTrackLine(ControlPoint prev, ControlPoint now, ControlPoint next, Contr
     DrawCube(p0, p1, trackLineWidth);
 }
 
-void CTrack::draw(bool doingShadows, bool arc) {
+void CTrack::draw(bool doingShadows, TrainWindow* tw) {
 
-    virtualPoints = ComputeVirtualPoints();
-    if(arc)
+
+//    virtualPoints = ComputeVirtualPoints();
+    virtualPoints = (this->*ComputePointsFunc[tw->splineBrowser->value() - 1])(20);
+    if(tw->arcLength->value())
         virtualPoints = FixedArcPoints(virtualPoints, 3, 4);
 //    std::cout << "======\n\n";
 //    for(int i = 0; i < virtualPoints.size(); i++){
@@ -279,16 +285,16 @@ void CTrack::draw(bool doingShadows, bool arc) {
 
 
 
-    //Track
-    for(int i = 0; i < points.size(); i++){
-        ControlPoint now = points[i];
-        ControlPoint next = points[(i+1)%points.size()];
-        Pnt3f Pos = (now.pos + next.pos) * 0.5;
-        Pnt3f minus = (next.pos + now.pos * -1);
-        Pnt3f Size(1, (minus * 0.5).length(), 1);
-
-        DrawCube(Pos, Size, minus);
-    }
+//    //Track
+//    for(int i = 0; i < points.size(); i++){
+//        ControlPoint now = points[i];
+//        ControlPoint next = points[(i+1)%points.size()];
+//        Pnt3f Pos = (now.pos + next.pos) * 0.5;
+//        Pnt3f minus = (next.pos + now.pos * -1);
+//        Pnt3f Size(1, (minus * 0.5).length(), 1);
+//
+//        DrawCube(Pos, Size, minus);
+//    }
 
 
 
@@ -327,6 +333,53 @@ vector <ControlPoint> CTrack::ComputeVirtualPoints() {
                                    points[now].orient * ( 1 + 3 * mod + 3 * mod * mod - 3 * mod * mod * mod ) +
                                    points[next].orient * (4 - 6 * mod * mod + 3 * mod * mod * mod) +
                                    points[last].orient * ((1 - mod) * (1 - mod) * (1 - mod))) * (1 / 6.0f)
+
+        );
+    }
+    return VirtualPoints;
+}
+
+
+vector<ControlPoint> CTrack::BspLinePoints(int checkPointsCount) {
+    vector<ControlPoint> VirtualPoints;
+//    float checkPointCount = 20;
+    for(int i = 0; i < points.size() * checkPointsCount; i++){
+        int now = i / checkPointsCount,
+            prev = now - 1 + points.size(),
+            next = now + 1,
+            last = now + 2;
+        prev %= points.size();
+        next %= points.size();
+        last %= points.size();
+        float mod = (1 - 1.0f / checkPointsCount) - (i / (float)checkPointsCount - now);
+        VirtualPoints.emplace_back((
+                                       points[prev].pos * ( mod * mod * mod ) +
+                                       points[now].pos * ( 1 + 3 * mod + 3 * mod * mod - 3 * mod * mod * mod ) +
+                                       points[next].pos * (4 - 6 * mod * mod + 3 * mod * mod * mod) +
+                                       points[last].pos * ((1 - mod) * (1 - mod) * (1 - mod))) * (1 / 6.0f),
+
+                                   (points[prev].orient * ( mod * mod * mod ) +
+                                    points[now].orient * ( 1 + 3 * mod + 3 * mod * mod - 3 * mod * mod * mod ) +
+                                    points[next].orient * (4 - 6 * mod * mod + 3 * mod * mod * mod) +
+                                    points[last].orient * ((1 - mod) * (1 - mod) * (1 - mod))) * (1 / 6.0f)
+
+        );
+    }
+    return VirtualPoints;
+}
+
+vector<ControlPoint> CTrack::LinearPoints(int checkPointsCount) {
+    vector<ControlPoint> VirtualPoints;
+    for(int i = 0; i < points.size() * checkPointsCount; i++){
+        int now = i / checkPointsCount,
+            next = ( now + 1 ) % points.size();
+        float mod = i - now * checkPointsCount;
+        VirtualPoints.emplace_back(
+            (points[now].pos * (checkPointsCount - mod) +
+                                       points[next].pos * (mod)) * (1.0f / checkPointsCount),
+
+            (points[now].orient * (checkPointsCount - mod) +
+                                       points[next].orient * (mod)) * (1.0f / checkPointsCount)
 
         );
     }
