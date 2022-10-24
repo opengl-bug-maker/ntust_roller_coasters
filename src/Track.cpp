@@ -29,6 +29,7 @@
 
 #include <GL/gl.h>
 #include <FL/fl_ask.h>
+#include <iostream>
 
 //****************************************************************************
 //
@@ -179,7 +180,104 @@ writePoints(const char* filename)
 	}
 }
 
-void CTrack::draw() {
+void DrawCube(Pnt3f pos, Pnt3f size, Pnt3f dir){
+    glPushMatrix();
+    glTranslatef(pos.x,pos.y,pos.z);
+
+    float theta1 = -radiansToDegrees(atan2(dir.z,dir.x));
+    glRotatef(theta1,0,1,0);
+    float theta2 = -radiansToDegrees(acos(dir.y));
+    glRotatef(theta2,0,0,1);
+//region gl
+    glBegin(GL_QUADS);
+    glNormal3f( 0,0,1);
+    glVertex3f( size.x, size.y, size.z);
+    glVertex3f(-size.x, size.y, size.z);
+    glVertex3f(-size.x,-size.y, size.z);
+    glVertex3f( size.x,-size.y, size.z);
+
+    glNormal3f( 0, 0, -1);
+    glVertex3f( size.x, size.y, -size.z);
+    glVertex3f( size.x,-size.y, -size.z);
+    glVertex3f(-size.x,-size.y, -size.z);
+    glVertex3f(-size.x, size.y, -size.z);
+
+    glNormal3f( 0,1,0);
+    glVertex3f( size.x,size.y, size.z);
+    glVertex3f(-size.x,size.y, size.z);
+    glVertex3f(-size.x,size.y,-size.z);
+    glVertex3f( size.x,size.y,-size.z);
+
+
+    glNormal3f( 0,-1,0);
+    glVertex3f( size.x,-size.y, size.z);
+    glVertex3f(-size.x,-size.y, size.z);
+    glVertex3f(-size.x,-size.y,-size.z);
+    glVertex3f( size.x,-size.y,-size.z);
+
+    glNormal3f( 1,0,0);
+    glVertex3f( size.x, size.y, size.z);
+    glVertex3f( size.x,-size.y, size.z);
+    glVertex3f( size.x,-size.y,-size.z);
+    glVertex3f( size.x, size.y,-size.z);
+
+    glNormal3f(-1,0,0);
+    glVertex3f(-size.x, size.y, size.z);
+    glVertex3f(-size.x, size.y,-size.z);
+    glVertex3f(-size.x,-size.y,-size.z);
+    glVertex3f(-size.x,-size.y, size.z);
+    glEnd();
+//endregion
+    glPopMatrix();
+}
+
+void DrawCube(Pnt3f now, Pnt3f next, float cubeWidth){
+    Pnt3f Pos = ( now + next ) * 0.5;
+    Pnt3f Minus = now + next * -1;
+    Pnt3f Size(cubeWidth, (Minus * 0.5).length() , cubeWidth);
+
+    DrawCube(Pos, Size, Minus);
+}
+
+Pnt3f AverageTrackPoint(ControlPoint prev, ControlPoint now, ControlPoint next, float trackWidth){
+    Pnt3f Line0 = now.orient * (now.pos + prev.pos * -1);
+    Line0.normalize();
+    Pnt3f Line1 = now.orient * (next.pos + now.pos * -1);
+    Line1.normalize();
+    Pnt3f Line = (Line0 + Line1) * 0.5;
+    Line.normalize();
+    return Line * trackWidth + now.pos;
+}
+
+void DrawTrackLine(ControlPoint prev, ControlPoint now, ControlPoint next, ControlPoint last, float trackWidth, float trackLineWidth){
+    Pnt3f p0 = AverageTrackPoint(prev, now, next, trackWidth);
+    Pnt3f p1 = AverageTrackPoint(now, next, last, trackWidth);
+    DrawCube(p0, p1, trackLineWidth);
+}
+
+void CTrack::draw(bool doingShadows, bool arc) {
+
+    virtualPoints = ComputeVirtualPoints();
+    if(arc)
+        virtualPoints = FixedArcPoints(virtualPoints, 3, 4);
+//    std::cout << "======\n\n";
+//    for(int i = 0; i < virtualPoints.size(); i++){
+//        std::cout << virtualPoints[i].pos.x << " " << virtualPoints[i].pos.y << " " << virtualPoints[i].pos.z << "\n";
+//        if(!doingShadows)
+//            glColor3ub(20 + i * 4, 20 + i * 4, 20 + i * 4);
+//        virtualPoints[i].draw();
+//    }
+    DrawTrack(virtualPoints, doingShadows);
+    if(!doingShadows)
+        glColor3ub(240, 60, 60);
+//    for(int i = 0; i < virtualPoints.size(); i++){
+//        if(!doingShadows)
+//            glColor3ub(20 + i * 4, 20 + i * 4, 20 + i * 4);
+//        virtualPoints[i].draw();
+//    }
+
+
+
 
     //Track
     for(int i = 0; i < points.size(); i++){
@@ -189,112 +287,117 @@ void CTrack::draw() {
         Pnt3f minus = (next.pos + now.pos * -1);
         Pnt3f Size(1, (minus * 0.5).length(), 1);
 
-        glPushMatrix();
-        glTranslatef(Pos.x,Pos.y,Pos.z);
-
-        float theta1 = -radiansToDegrees(atan2(minus.z,minus.x));
-        glRotatef(theta1,0,1,0);
-        float theta2 = -radiansToDegrees(acos(minus.y));
-        glRotatef(theta2,0,0,1);
-
-        glBegin(GL_QUADS);
-            glNormal3f( 0,0,1);
-            glVertex3f( Size.x, Size.y, Size.z);
-            glVertex3f(-Size.x, Size.y, Size.z);
-            glVertex3f(-Size.x,-Size.y, Size.z);
-            glVertex3f( Size.x,-Size.y, Size.z);
-
-            glNormal3f( 0, 0, -1);
-            glVertex3f( Size.x, Size.y, -Size.z);
-            glVertex3f( Size.x,-Size.y, -Size.z);
-            glVertex3f(-Size.x,-Size.y, -Size.z);
-            glVertex3f(-Size.x, Size.y, -Size.z);
-
-            glNormal3f( 0,1,0);
-            glVertex3f( Size.x,Size.y, Size.z);
-            glVertex3f(-Size.x,Size.y, Size.z);
-            glVertex3f(-Size.x,Size.y,-Size.z);
-            glVertex3f( Size.x,Size.y,-Size.z);
-
-
-            glNormal3f( 0,-1,0);
-            glVertex3f( Size.x,-Size.y, Size.z);
-            glVertex3f(-Size.x,-Size.y, Size.z);
-            glVertex3f(-Size.x,-Size.y,-Size.z);
-            glVertex3f( Size.x,-Size.y,-Size.z);
-
-            glNormal3f( 1,0,0);
-            glVertex3f( Size.x, Size.y, Size.z);
-            glVertex3f( Size.x,-Size.y, Size.z);
-            glVertex3f( Size.x,-Size.y,-Size.z);
-            glVertex3f( Size.x, Size.y,-Size.z);
-
-            glNormal3f(-1,0,0);
-            glVertex3f(-Size.x, Size.y, Size.z);
-            glVertex3f(-Size.x, Size.y,-Size.z);
-            glVertex3f(-Size.x,-Size.y,-Size.z);
-            glVertex3f(-Size.x,-Size.y, Size.z);
-        glEnd();
-        glPopMatrix();
+        DrawCube(Pos, Size, minus);
     }
 
 
 
     //Train
     Pnt3f trainBodySize(3, 10, 3);
-    int nowPos = trainU, nextPos = (nowPos + 1) % points.size();
+    int nowPos = ((int)trainU) % virtualPoints.size(), nextPos = (nowPos + 1) % virtualPoints.size();
     float midPoint = trainU - nowPos;
-    Pnt3f trainPos = points[nowPos].pos * (1 - midPoint) + points[nextPos].pos * midPoint;
+    Pnt3f trainPos = virtualPoints[nowPos].pos * (1 - midPoint) + virtualPoints[nextPos].pos * midPoint;
     trainPos = trainPos + Pnt3f(0, 4, 0);
 
-    Pnt3f TrainDir = (points[nextPos].pos + points[nowPos].pos * -1);
+    Pnt3f TrainDir = (virtualPoints[nextPos].pos + virtualPoints[nowPos].pos * -1);
+    DrawCube(trainPos, trainBodySize, TrainDir);
 
 
-    glPushMatrix();
-    glTranslatef(trainPos.x,trainPos.y,trainPos.z);
-
-    float theta1 = -radiansToDegrees(atan2(TrainDir.z,TrainDir.x));
-    glRotatef(theta1,0,1,0);
-    float theta2 = -radiansToDegrees(acos(TrainDir.y));
-    glRotatef(theta2,0,0,1);
-
-    glBegin(GL_QUADS);
-    glNormal3f( 0,0,1);
-    glVertex3f( trainBodySize.x, trainBodySize.y, trainBodySize.z);
-    glVertex3f(-trainBodySize.x, trainBodySize.y, trainBodySize.z);
-    glVertex3f(-trainBodySize.x,-trainBodySize.y, trainBodySize.z);
-    glVertex3f( trainBodySize.x,-trainBodySize.y, trainBodySize.z);
-
-    glNormal3f( 0, 0, -1);
-    glVertex3f( trainBodySize.x, trainBodySize.y, -trainBodySize.z);
-    glVertex3f( trainBodySize.x,-trainBodySize.y, -trainBodySize.z);
-    glVertex3f(-trainBodySize.x,-trainBodySize.y, -trainBodySize.z);
-    glVertex3f(-trainBodySize.x, trainBodySize.y, -trainBodySize.z);
-
-    glNormal3f( 0,1,0);
-    glVertex3f( trainBodySize.x,trainBodySize.y, trainBodySize.z);
-    glVertex3f(-trainBodySize.x,trainBodySize.y, trainBodySize.z);
-    glVertex3f(-trainBodySize.x,trainBodySize.y,-trainBodySize.z);
-    glVertex3f( trainBodySize.x,trainBodySize.y,-trainBodySize.z);
-
-
-    glNormal3f( 0,-1,0);
-    glVertex3f( trainBodySize.x,-trainBodySize.y, trainBodySize.z);
-    glVertex3f(-trainBodySize.x,-trainBodySize.y, trainBodySize.z);
-    glVertex3f(-trainBodySize.x,-trainBodySize.y,-trainBodySize.z);
-    glVertex3f( trainBodySize.x,-trainBodySize.y,-trainBodySize.z);
-
-    glNormal3f( 1,0,0);
-    glVertex3f( trainBodySize.x, trainBodySize.y, trainBodySize.z);
-    glVertex3f( trainBodySize.x,-trainBodySize.y, trainBodySize.z);
-    glVertex3f( trainBodySize.x,-trainBodySize.y,-trainBodySize.z);
-    glVertex3f( trainBodySize.x, trainBodySize.y,-trainBodySize.z);
-
-    glNormal3f(-1,0,0);
-    glVertex3f(-trainBodySize.x, trainBodySize.y, trainBodySize.z);
-    glVertex3f(-trainBodySize.x, trainBodySize.y,-trainBodySize.z);
-    glVertex3f(-trainBodySize.x,-trainBodySize.y,-trainBodySize.z);
-    glVertex3f(-trainBodySize.x,-trainBodySize.y, trainBodySize.z);
-    glEnd();
-    glPopMatrix();
 }
+
+vector <ControlPoint> CTrack::ComputeVirtualPoints() {
+    vector<ControlPoint> VirtualPoints;
+    float checkPointCount = 20;
+    for(int i = 0; i < points.size() * checkPointCount; i++){
+        int now = i / checkPointCount,
+            prev = now - 1 + points.size(),
+            next = now + 1,
+            last = now + 2;
+        prev %= points.size();
+        next %= points.size();
+        last %= points.size();
+        float mod = (1 - 1 / checkPointCount) - (i / checkPointCount - now);
+        VirtualPoints.emplace_back((
+                                       points[prev].pos * ( mod * mod * mod ) +
+                                       points[now].pos * ( 1 + 3 * mod + 3 * mod * mod - 3 * mod * mod * mod ) +
+                                       points[next].pos * (4 - 6 * mod * mod + 3 * mod * mod * mod) +
+                                       points[last].pos * ((1 - mod) * (1 - mod) * (1 - mod))) * (1 / 6.0f),
+
+                                   (points[prev].orient * ( mod * mod * mod ) +
+                                   points[now].orient * ( 1 + 3 * mod + 3 * mod * mod - 3 * mod * mod * mod ) +
+                                   points[next].orient * (4 - 6 * mod * mod + 3 * mod * mod * mod) +
+                                   points[last].orient * ((1 - mod) * (1 - mod) * (1 - mod))) * (1 / 6.0f)
+
+        );
+    }
+    return VirtualPoints;
+}
+
+vector<ControlPoint> CTrack::FixedArcPoints(const vector<ControlPoint> &vPoints, float minLength, float maxLength) {
+    vector<ControlPoint> copy = vPoints;
+    copy.push_back(copy[0]);
+    vector<ControlPoint> arcPoints;
+    vector<float> PointsLength = vector<float>(copy.size(), 0);
+    for(int i = 1; i < copy.size(); i++){
+        PointsLength[i] = PointsLength[i - 1] + (copy[i].pos + copy[i - 1].pos * -1).length();
+    }
+    int ArcPointCount = ( PointsLength[copy.size() - 1] / minLength + PointsLength[copy.size() - 1] / maxLength ) / 2;
+    float ArcLength = PointsLength[copy.size() - 1] / ArcPointCount;
+
+    int lastPos = 0;
+
+    for(int i = 0; i < ArcPointCount; i++){
+        float nowLength = ArcLength * i;
+        while(nowLength >= PointsLength[lastPos]){
+            lastPos++;
+        }
+        int prev = lastPos - 1;
+        float minus = PointsLength[lastPos] - PointsLength[prev];
+        arcPoints.emplace_back(
+            copy[prev].pos * ((PointsLength[lastPos] - nowLength) / minus) + copy[lastPos].pos * ((nowLength - PointsLength[prev]) / minus),
+            copy[prev].orient * ((PointsLength[lastPos] - nowLength) / minus) + copy[lastPos].orient * ((nowLength - PointsLength[prev]) / minus)
+        );
+    }
+
+    return arcPoints;
+}
+
+void DrawTrackLine(const vector<ControlPoint>& trackPoints, float trackWidth, float trackLineWidth){
+    for(int i = 0; i < trackPoints.size(); i++){
+        ControlPoint prev = trackPoints[(i - 1 + trackPoints.size()) % trackPoints.size()];
+        ControlPoint now = trackPoints[i];
+        ControlPoint next = trackPoints[(i + 1) % trackPoints.size()];
+        ControlPoint last = trackPoints[(i + 2) % trackPoints.size()];
+        DrawTrackLine(prev, now, next, last, trackWidth, trackLineWidth);
+        DrawTrackLine(last, next, now, prev, trackWidth, trackLineWidth);
+    }
+}
+
+void DrawTrackRoad(const vector<ControlPoint>& trackPoints, float trackWidth, float trackLineWidth, float trackRoadWidth){
+    for(int i = 0; i < trackPoints.size(); i++){
+        ControlPoint prev = trackPoints[(i - 1 + trackPoints.size()) % trackPoints.size()];
+        ControlPoint now = trackPoints[i];
+        ControlPoint next = trackPoints[(i + 1) % trackPoints.size()];
+        Pnt3f p0 = AverageTrackPoint(prev, now, next, trackWidth);
+        Pnt3f p1 = AverageTrackPoint(next, now, prev, trackWidth);
+
+        Pnt3f Pos = ( p0 + p1 ) * 0.5;
+        Pnt3f Minus = p0 + p1 * -1;
+        Pnt3f Size(trackLineWidth / 2, (Minus * 0.5).length() , trackRoadWidth);
+
+        DrawCube(Pos, Size, Minus);
+    }
+}
+
+void CTrack::DrawTrack(const vector<ControlPoint>& trackPoints, bool doingShadows) {
+    float trackWidth = 3;
+    float trackLineWidth = 0.4;
+    float trackRoadWidth = 1;
+    if(!doingShadows)
+        glColor3ub(60, 240, 60);
+    DrawTrackLine(trackPoints, trackWidth, trackLineWidth);
+    if(!doingShadows)
+        glColor3ub(60, 60, 240);
+    DrawTrackRoad(trackPoints, trackWidth, trackLineWidth, trackRoadWidth);
+}
+

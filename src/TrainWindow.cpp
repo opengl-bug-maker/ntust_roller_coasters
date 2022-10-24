@@ -217,12 +217,12 @@ advanceTrain(float dir)
 //        float vel = ew.physics->value() ? physicsSpeed(this) : dir * (float)speed->value();
         float vel = dir * (float)speed->value();
         //todo : v to version arcLen
-//        m_Track.trainU += arclenVtoV(m_Track.trainU, vel, this);
+        m_Track.trainU +=  dir * ((float)speed->value() * .1f);
     } else {
         m_Track.trainU +=  dir * ((float)speed->value() * .1f);
     }
 
-    float nct = static_cast<float>(m_Track.points.size());
+    float nct = static_cast<float>(arcLength->value() ? m_Track.virtualPoints.size() : m_Track.virtualPoints.size());
     if (m_Track.trainU > nct) m_Track.trainU -= nct;
     if (m_Track.trainU < 0) m_Track.trainU += nct;
 }

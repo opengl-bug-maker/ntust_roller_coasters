@@ -48,13 +48,17 @@ class CTrack {
 		void readPoints(const char* filename);
 		void writePoints(const char* filename);
 
-        void draw();
+        void draw(bool doingShadows, bool arc);
 
+        vector<ControlPoint> ComputeVirtualPoints();
+        vector<ControlPoint> FixedArcPoints(const vector<ControlPoint>& vPoints, float minLength, float maxLength);
+        void DrawTrack(const vector<ControlPoint>& trackPoints, bool doingShadows);
 	public:
 		// rather than have generic objects, we make a special case for these few
 		// objects that we know that all implementations are going to need and that
 		// we're going to have to handle specially
 		vector<ControlPoint> points;
+        vector<ControlPoint> virtualPoints;
 
 		//###################################################################
 		// TODO: you might want to do this differently
