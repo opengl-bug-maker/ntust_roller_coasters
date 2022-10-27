@@ -28,6 +28,9 @@
 class TrainWindow;
 
 #include <vector>
+#include <GL/gl.h>
+#include <FL/fl_ask.h>
+#include <iostream>
 
 using std::vector; // avoid having to say std::vector all of the time
 
@@ -52,14 +55,25 @@ class CTrack {
 
         void draw(bool doingShadows, TrainWindow* tw);
 
+        //
         vector<ControlPoint> (CTrack::*ComputePointsFunc[3])(int);
 
         vector<ControlPoint> ComputeVirtualPoints();
         vector<ControlPoint> BspLinePoints(int checkPointsCount);
         vector<ControlPoint> LinearPoints(int checkPointsCount);
+        //
 
         vector<ControlPoint> FixedArcPoints(const vector<ControlPoint>& vPoints, float minLength, float maxLength);
-        void DrawTrack(const vector<ControlPoint>& trackPoints, bool doingShadows);
+
+        //
+        void DrawTrack(const vector<ControlPoint>& trackPoints, bool doingShadows, float trackWidth, float trackLineWidth, float trackRoadWidth, GLubyte* trackLineColor, GLubyte* trackRoadColor);
+
+        void (CTrack::*DrawTrackLineFunc[3])();
+        void DrawTrackLineTwoLine();
+
+        void (CTrack::*DrawTrackRoadFunc[3])();
+        void DrawTrackRoadOneWood();
+        //
 	public:
 		// rather than have generic objects, we make a special case for these few
 		// objects that we know that all implementations are going to need and that
