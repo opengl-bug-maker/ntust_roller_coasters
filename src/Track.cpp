@@ -261,19 +261,26 @@ void DrawTrackLine(ControlPoint prev, ControlPoint now, ControlPoint next, Contr
 }
 
 void CTrack::draw(bool doingShadows, TrainWindow* tw) {
-    int checkPointsCount = 20;
+    int ComputePointIndex = tw->splineBrowser->value() - 1;
+    int DrawTrackLineIndex = 0;
+    int DrawTrackRoadIndex = 0;
+
+    bool arcLengthVersion = tw->arcLength->value();
+
+    int checkPointsCount = 5;
     float arcMinLength = 3, arcMaxLength = 4;
-    float trackWidth = 3;
-    float trackLineWidth = 0.4;
+    float trackWidth = 6;
+    float trackLineWidth = 1;
     float trackRoadWidth = 1;
     GLubyte TrackLineColor[3] = {60, 240, 60};
     GLubyte TrackRoadColor[3] = {60, 240, 60};
     GLubyte TrainColor[3] = {240, 60, 60};
 
 
-//    virtualPoints = ComputeVirtualPoints();
-    virtualPoints = (this->*ComputePointsFunc[tw->splineBrowser->value() - 1])(checkPointsCount);
-    if(tw->arcLength->value())
+    TrackLine trackLine = TrackLine(TrackLineColor, trackLineWidth);
+
+    virtualPoints = (this->*ComputePointsFunc[ComputePointIndex])(checkPointsCount);
+    if(arcLengthVersion)
         virtualPoints = FixedArcPoints(virtualPoints, arcMinLength, arcMaxLength);
 //    std::cout << "======\n\n";
 //    for(int i = 0; i < virtualPoints.size(); i++){
@@ -282,10 +289,14 @@ void CTrack::draw(bool doingShadows, TrainWindow* tw) {
 //            glColor3ub(20 + i * 4, 20 + i * 4, 20 + i * 4);
 //        virtualPoints[i].draw();
 //    }
-    DrawTrack(virtualPoints, doingShadows, trackWidth, trackLineWidth, trackRoadWidth, TrackLineColor, TrackRoadColor);
-    if(!doingShadows)
-//        glColor3ub(240, 60, 60);
-        glColor3ubv(TrainColor);
+
+//    if(!doingShadows)
+    (this->*DrawTrackLineFunc[DrawTrackLineIndex])(virtualPoints, doingShadows, trackLine, trackWidth);
+//    if(!doingShadows)
+    (this->*DrawTrackRoadFunc[DrawTrackRoadIndex])(virtualPoints, doingShadows, trackLine, trackWidth);
+
+//    DrawTrack(virtualPoints, doingShadows, trackWidth, trackLineWidth, trackRoadWidth, TrackLineColor, TrackRoadColor);
+
 //    for(int i = 0; i < virtualPoints.size(); i++){
 //        if(!doingShadows)
 //            glColor3ub(20 + i * 4, 20 + i * 4, 20 + i * 4);
@@ -293,20 +304,9 @@ void CTrack::draw(bool doingShadows, TrainWindow* tw) {
 //    }
 
 
-
-
-//    //Track
-//    for(int i = 0; i < points.size(); i++){
-//        ControlPoint now = points[i];
-//        ControlPoint next = points[(i+1)%points.size()];
-//        Pnt3f Pos = (now.pos + next.pos) * 0.5;
-//        Pnt3f minus = (next.pos + now.pos * -1);
-//        Pnt3f Size(1, (minus * 0.5).length(), 1);
-//
-//        DrawCube(Pos, Size, minus);
-//    }
-
-
+    if(!doingShadows)
+//        glColor3ub(240, 60, 60);
+        glColor3ubv(TrainColor);
 
     //Train
     Pnt3f trainBodySize(3, 10, 3);
@@ -348,7 +348,6 @@ vector <ControlPoint> CTrack::ComputeVirtualPoints() {
     }
     return VirtualPoints;
 }
-
 
 vector<ControlPoint> CTrack::BspLinePoints(int checkPointsCount) {
     vector<ControlPoint> VirtualPoints;
@@ -466,11 +465,51 @@ void CTrack::DrawTrack(const vector<ControlPoint>& trackPoints, bool doingShadow
     DrawTrackRoad(trackPoints, trackWidth, trackLineWidth, trackRoadWidth);
 }
 
-void CTrack::DrawTrackLineTwoLine() {
+void CTrack::DrawTrackLineTwoLine(const vector<ControlPoint>& trackPoints, const bool& doingShadows, TrackLine& trackLine,const float& trackWidth) {
+    for(int i = 0; i < trackPoints.size(); i++){
+        ControlPoint fir = trackPoints[i];
+        ControlPoint sec = trackPoints[(i + 1) % trackPoints.size()];
+        ControlPoint trd = trackPoints[(i + 2) % trackPoints.size()];
 
+        ObjInfoPack pack0 = TrackTwoLine(fir, sec, trd, trackWidth);
+        trackLine.setPos(pack0.getPos());
+        trackLine.setTrackLineLength(pack0.getSize().y);
+        trackLine.setRotate(pack0.getRotate());
+        trackLine.Draw(doingShadows);
+
+        ObjInfoPack pack1 = TrackTwoLine(trd, sec, fir, trackWidth);
+        trackLine.setPos(pack1.getPos());
+        trackLine.setTrackLineLength(pack1.getSize().y);
+        trackLine.setRotate(pack1.getRotate());
+        trackLine.Draw(doingShadows);
+    }
 }
 
-void CTrack::DrawTrackRoadOneWood() {
+ObjInfoPack CTrack::TrackTwoLine(const ControlPoint &fir, const ControlPoint &sec, const ControlPoint &trd, const float& trackWidth) {
+    ControlPoint mid0 = ControlPoint(
+        ( fir.pos + sec.pos ) * 0.5,
+        (fir.orient + sec.orient) * 0.5
+    );
+    ControlPoint mid1 = ControlPoint(
+        (sec.pos + trd.pos) * 0.5,
+        (sec.orient + trd.orient) * 0.5
+    );
 
+    Pnt3f out0 = (mid0.orient * (sec.pos + fir.pos * -1));
+    out0.normalize();
+    out0 = mid0.pos + out0 * trackWidth;
+    Pnt3f out1 = (mid1.orient * (trd.pos + sec.pos * -1));
+    out1.normalize();
+    out1 = mid1.pos + out1 * trackWidth;
+
+    return ObjInfoPack(
+        (out0 + out1) * 0.5,
+        Pnt3f(1, (out1 + out0 * -1).length(), 1),
+        (out1 + out0 * -1),
+        new GLubyte[]{0, 0, 0}
+    );
 }
 
+void CTrack::DrawTrackRoadOneWood(const vector<ControlPoint>& trackPoints, const bool& doingShadows, const TrackLine& trackRoad, const float& trackWidth) {
+
+}

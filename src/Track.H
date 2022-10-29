@@ -28,14 +28,18 @@
 class TrainWindow;
 
 #include <vector>
-#include <GL/gl.h>
-#include <FL/fl_ask.h>
+#include <GL/GL.h>
+#include <FL/fl_ask.H>
 #include <iostream>
 
 using std::vector; // avoid having to say std::vector all of the time
 
 // make use of other data structures from this project
 #include "ControlPoint.H"
+#include "Obj/Obj.h"
+#include "Obj/Cuboid.h"
+#include "Obj/TrackLine.h"
+#include "Obj/ObjInfoPack.h"
 
 class CTrack {
 	public:		
@@ -68,11 +72,12 @@ class CTrack {
         //
         void DrawTrack(const vector<ControlPoint>& trackPoints, bool doingShadows, float trackWidth, float trackLineWidth, float trackRoadWidth, GLubyte* trackLineColor, GLubyte* trackRoadColor);
 
-        void (CTrack::*DrawTrackLineFunc[3])();
-        void DrawTrackLineTwoLine();
+        void (CTrack::*DrawTrackLineFunc[3])(const vector<ControlPoint>&, const bool&, TrackLine&, const float&);
+        void DrawTrackLineTwoLine(const vector<ControlPoint>& trackPoints, const bool& doingShadows, TrackLine& trackLine,const float& trackWidth);
+        ObjInfoPack TrackTwoLine(const ControlPoint& fir, const ControlPoint& sec, const ControlPoint& trd, const float& trackWidth);
 
-        void (CTrack::*DrawTrackRoadFunc[3])();
-        void DrawTrackRoadOneWood();
+        void (CTrack::*DrawTrackRoadFunc[3])(const vector<ControlPoint>&, const bool&, const TrackLine&,const float&);
+        void DrawTrackRoadOneWood(const vector<ControlPoint>& trackPoints, const bool& doingShadows, const TrackLine& trackRoad,const float& trackWidth);
         //
 	public:
 		// rather than have generic objects, we make a special case for these few
