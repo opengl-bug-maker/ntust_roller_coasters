@@ -62,7 +62,7 @@ class CTrack {
         //
         vector<ControlPoint> (CTrack::*ComputePointsFunc[3])(int);
 
-        vector<ControlPoint> ComputeVirtualPoints();
+//        vector<ControlPoint> ComputeVirtualPoints();
         vector<ControlPoint> BspLinePoints(int checkPointsCount);
         vector<ControlPoint> LinearPoints(int checkPointsCount);
         //
@@ -70,7 +70,7 @@ class CTrack {
         vector<ControlPoint> FixedArcPoints(const vector<ControlPoint>& vPoints, float minLength, float maxLength);
 
         //
-        void DrawTrack(const vector<ControlPoint>& trackPoints, bool doingShadows, float trackWidth, float trackLineWidth, float trackRoadWidth, GLubyte* trackLineColor, GLubyte* trackRoadColor);
+//        void DrawTrack(const vector<ControlPoint>& trackPoints, bool doingShadows, float trackWidth, float trackLineWidth, float trackRoadWidth, GLubyte* trackLineColor, GLubyte* trackRoadColor);
 
         void (CTrack::*DrawTrackLineFunc[3])(const vector<ControlPoint>&, const bool&, TrackLine&, const float&);
         void DrawTrackLineTwoLine(const vector<ControlPoint>& trackPoints, const bool& doingShadows, TrackLine& trackLine,const float& trackWidth);

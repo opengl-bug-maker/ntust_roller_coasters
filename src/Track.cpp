@@ -244,21 +244,21 @@ void DrawCube(Pnt3f now, Pnt3f next, float cubeWidth){
     DrawCube(Pos, Size, Minus);
 }
 
-Pnt3f AverageTrackPoint(ControlPoint prev, ControlPoint now, ControlPoint next, float trackWidth){
-    Pnt3f Line0 = now.orient * (now.pos + prev.pos * -1);
-    Line0.normalize();
-    Pnt3f Line1 = now.orient * (next.pos + now.pos * -1);
-    Line1.normalize();
-    Pnt3f Line = (Line0 + Line1) * 0.5;
-    Line.normalize();
-    return Line * trackWidth + now.pos;
-}
+//Pnt3f AverageTrackPoint(ControlPoint prev, ControlPoint now, ControlPoint next, float trackWidth){
+//    Pnt3f Line0 = now.orient * (now.pos + prev.pos * -1);
+//    Line0.normalize();
+//    Pnt3f Line1 = now.orient * (next.pos + now.pos * -1);
+//    Line1.normalize();
+//    Pnt3f Line = (Line0 + Line1) * 0.5;
+//    Line.normalize();
+//    return Line * trackWidth + now.pos;
+//}
 
-void DrawTrackLine(ControlPoint prev, ControlPoint now, ControlPoint next, ControlPoint last, float trackWidth, float trackLineWidth){
-    Pnt3f p0 = AverageTrackPoint(prev, now, next, trackWidth);
-    Pnt3f p1 = AverageTrackPoint(now, next, last, trackWidth);
-    DrawCube(p0, p1, trackLineWidth);
-}
+//void DrawTrackLine(ControlPoint prev, ControlPoint now, ControlPoint next, ControlPoint last, float trackWidth, float trackLineWidth){
+//    Pnt3f p0 = AverageTrackPoint(prev, now, next, trackWidth);
+//    Pnt3f p1 = AverageTrackPoint(now, next, last, trackWidth);
+//    DrawCube(p0, p1, trackLineWidth);
+//}
 
 void CTrack::draw(bool doingShadows, TrainWindow* tw) {
     int ComputePointIndex = tw->splineBrowser->value() - 1;
@@ -321,33 +321,33 @@ void CTrack::draw(bool doingShadows, TrainWindow* tw) {
 
 }
 
-vector <ControlPoint> CTrack::ComputeVirtualPoints() {
-    vector<ControlPoint> VirtualPoints;
-    float checkPointCount = 20;
-    for(int i = 0; i < points.size() * checkPointCount; i++){
-        int now = i / checkPointCount,
-            prev = now - 1 + points.size(),
-            next = now + 1,
-            last = now + 2;
-        prev %= points.size();
-        next %= points.size();
-        last %= points.size();
-        float mod = (1 - 1 / checkPointCount) - (i / checkPointCount - now);
-        VirtualPoints.emplace_back((
-                                       points[prev].pos * ( mod * mod * mod ) +
-                                       points[now].pos * ( 1 + 3 * mod + 3 * mod * mod - 3 * mod * mod * mod ) +
-                                       points[next].pos * (4 - 6 * mod * mod + 3 * mod * mod * mod) +
-                                       points[last].pos * ((1 - mod) * (1 - mod) * (1 - mod))) * (1 / 6.0f),
-
-                                   (points[prev].orient * ( mod * mod * mod ) +
-                                   points[now].orient * ( 1 + 3 * mod + 3 * mod * mod - 3 * mod * mod * mod ) +
-                                   points[next].orient * (4 - 6 * mod * mod + 3 * mod * mod * mod) +
-                                   points[last].orient * ((1 - mod) * (1 - mod) * (1 - mod))) * (1 / 6.0f)
-
-        );
-    }
-    return VirtualPoints;
-}
+//vector <ControlPoint> CTrack::ComputeVirtualPoints() {
+//    vector<ControlPoint> VirtualPoints;
+//    float checkPointCount = 20;
+//    for(int i = 0; i < points.size() * checkPointCount; i++){
+//        int now = i / checkPointCount,
+//            prev = now - 1 + points.size(),
+//            next = now + 1,
+//            last = now + 2;
+//        prev %= points.size();
+//        next %= points.size();
+//        last %= points.size();
+//        float mod = (1 - 1 / checkPointCount) - (i / checkPointCount - now);
+//        VirtualPoints.emplace_back((
+//                                       points[prev].pos * ( mod * mod * mod ) +
+//                                       points[now].pos * ( 1 + 3 * mod + 3 * mod * mod - 3 * mod * mod * mod ) +
+//                                       points[next].pos * (4 - 6 * mod * mod + 3 * mod * mod * mod) +
+//                                       points[last].pos * ((1 - mod) * (1 - mod) * (1 - mod))) * (1 / 6.0f),
+//
+//                                   (points[prev].orient * ( mod * mod * mod ) +
+//                                   points[now].orient * ( 1 + 3 * mod + 3 * mod * mod - 3 * mod * mod * mod ) +
+//                                   points[next].orient * (4 - 6 * mod * mod + 3 * mod * mod * mod) +
+//                                   points[last].orient * ((1 - mod) * (1 - mod) * (1 - mod))) * (1 / 6.0f)
+//
+//        );
+//    }
+//    return VirtualPoints;
+//}
 
 vector<ControlPoint> CTrack::BspLinePoints(int checkPointsCount) {
     vector<ControlPoint> VirtualPoints;
@@ -424,46 +424,46 @@ vector<ControlPoint> CTrack::FixedArcPoints(const vector<ControlPoint> &vPoints,
     return arcPoints;
 }
 
-void DrawTrackLine(const vector<ControlPoint>& trackPoints, float trackWidth, float trackLineWidth){
-    for(int i = 0; i < trackPoints.size(); i++){
-        ControlPoint prev = trackPoints[(i - 1 + trackPoints.size()) % trackPoints.size()];
-        ControlPoint now = trackPoints[i];
-        ControlPoint next = trackPoints[(i + 1) % trackPoints.size()];
-        ControlPoint last = trackPoints[(i + 2) % trackPoints.size()];
-        DrawTrackLine(prev, now, next, last, trackWidth, trackLineWidth);
-        DrawTrackLine(last, next, now, prev, trackWidth, trackLineWidth);
-    }
-}
+//void DrawTrackLine(const vector<ControlPoint>& trackPoints, float trackWidth, float trackLineWidth){
+//    for(int i = 0; i < trackPoints.size(); i++){
+//        ControlPoint prev = trackPoints[(i - 1 + trackPoints.size()) % trackPoints.size()];
+//        ControlPoint now = trackPoints[i];
+//        ControlPoint next = trackPoints[(i + 1) % trackPoints.size()];
+//        ControlPoint last = trackPoints[(i + 2) % trackPoints.size()];
+//        DrawTrackLine(prev, now, next, last, trackWidth, trackLineWidth);
+//        DrawTrackLine(last, next, now, prev, trackWidth, trackLineWidth);
+//    }
+//}
 
-void DrawTrackRoad(const vector<ControlPoint>& trackPoints, float trackWidth, float trackLineWidth, float trackRoadWidth){
-    for(int i = 0; i < trackPoints.size(); i++){
-        ControlPoint prev = trackPoints[(i - 1 + trackPoints.size()) % trackPoints.size()];
-        ControlPoint now = trackPoints[i];
-        ControlPoint next = trackPoints[(i + 1) % trackPoints.size()];
-        Pnt3f p0 = AverageTrackPoint(prev, now, next, trackWidth);
-        Pnt3f p1 = AverageTrackPoint(next, now, prev, trackWidth);
+//void DrawTrackRoad(const vector<ControlPoint>& trackPoints, float trackWidth, float trackLineWidth, float trackRoadWidth){
+//    for(int i = 0; i < trackPoints.size(); i++){
+//        ControlPoint prev = trackPoints[(i - 1 + trackPoints.size()) % trackPoints.size()];
+//        ControlPoint now = trackPoints[i];
+//        ControlPoint next = trackPoints[(i + 1) % trackPoints.size()];
+//        Pnt3f p0 = AverageTrackPoint(prev, now, next, trackWidth);
+//        Pnt3f p1 = AverageTrackPoint(next, now, prev, trackWidth);
+//
+//        Pnt3f Pos = ( p0 + p1 ) * 0.5;
+//        Pnt3f Minus = p0 + p1 * -1;
+//        Pnt3f Size(trackLineWidth / 2, (Minus * 0.5).length() , trackRoadWidth);
+//
+//        DrawCube(Pos, Size, Minus);
+//    }
+//}
 
-        Pnt3f Pos = ( p0 + p1 ) * 0.5;
-        Pnt3f Minus = p0 + p1 * -1;
-        Pnt3f Size(trackLineWidth / 2, (Minus * 0.5).length() , trackRoadWidth);
-
-        DrawCube(Pos, Size, Minus);
-    }
-}
-
-void CTrack::DrawTrack(const vector<ControlPoint>& trackPoints, bool doingShadows, float trackWidth, float trackLineWidth, float trackRoadWidth, GLubyte* trackLineColor, GLubyte* trackRoadColor) {
-//    float trackWidth = 3;
-//    float trackLineWidth = 0.4;
-//    float trackRoadWidth = 1;
-    if(!doingShadows)
-//        glColor3ub(60, 240, 60);
-        glColor3ubv(trackLineColor);
-    DrawTrackLine(trackPoints, trackWidth, trackLineWidth);
-    if(!doingShadows)
-//        glColor3ub(60, 60, 240);
-        glColor3ubv(trackRoadColor);
-    DrawTrackRoad(trackPoints, trackWidth, trackLineWidth, trackRoadWidth);
-}
+//void CTrack::DrawTrack(const vector<ControlPoint>& trackPoints, bool doingShadows, float trackWidth, float trackLineWidth, float trackRoadWidth, GLubyte* trackLineColor, GLubyte* trackRoadColor) {
+////    float trackWidth = 3;
+////    float trackLineWidth = 0.4;
+////    float trackRoadWidth = 1;
+//    if(!doingShadows)
+////        glColor3ub(60, 240, 60);
+//        glColor3ubv(trackLineColor);
+//    DrawTrackLine(trackPoints, trackWidth, trackLineWidth);
+//    if(!doingShadows)
+////        glColor3ub(60, 60, 240);
+//        glColor3ubv(trackRoadColor);
+//    DrawTrackRoad(trackPoints, trackWidth, trackLineWidth, trackRoadWidth);
+//}
 
 void CTrack::DrawTrackLineTwoLine(const vector<ControlPoint>& trackPoints, const bool& doingShadows, TrackLine& trackLine,const float& trackWidth) {
     for(int i = 0; i < trackPoints.size(); i++){
