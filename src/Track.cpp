@@ -304,6 +304,9 @@ void CTrack::draw(bool doingShadows, TrainWindow* tw) {
 //    }
 
 
+
+
+
     if(!doingShadows)
 //        glColor3ub(240, 60, 60);
         glColor3ubv(TrainColor);
@@ -318,6 +321,7 @@ void CTrack::draw(bool doingShadows, TrainWindow* tw) {
     Pnt3f TrainDir = (virtualPoints[nextPos].pos + virtualPoints[nowPos].pos * -1);
     DrawCube(trainPos, trainBodySize, TrainDir);
 
+    Train train();
 
 }
 
@@ -349,6 +353,32 @@ void CTrack::draw(bool doingShadows, TrainWindow* tw) {
 //    return VirtualPoints;
 //}
 
+vector<ControlPoint> CTrack::LinearPoints(int checkPointsCount) {
+    vector<ControlPoint> VirtualPoints;
+    for(int i = 0; i < points.size() * checkPointsCount; i++){
+        int now = i / checkPointsCount,
+            next = ( now + 1 ) % points.size();
+        float mod = i - now * checkPointsCount;
+        VirtualPoints.emplace_back(
+            (points[now].pos * (checkPointsCount - mod) +
+             points[next].pos * (mod)) * (1.0f / checkPointsCount),
+
+            (points[now].orient * (checkPointsCount - mod) +
+             points[next].orient * (mod)) * (1.0f / checkPointsCount)
+
+        );
+    }
+    return VirtualPoints;
+}
+
+vector<ControlPoint> CTrack::CardinalPoints(int checkPointsCount) {
+    vector<ControlPoint> VirtualPoints;
+    for(int i = 0; i < points.size() * checkPointsCount; i++){
+
+    }
+    return vector<ControlPoint>();
+}
+
 vector<ControlPoint> CTrack::BspLinePoints(int checkPointsCount) {
     vector<ControlPoint> VirtualPoints;
 //    float checkPointCount = 20;
@@ -371,24 +401,6 @@ vector<ControlPoint> CTrack::BspLinePoints(int checkPointsCount) {
                                     points[now].orient * ( 1 + 3 * mod + 3 * mod * mod - 3 * mod * mod * mod ) +
                                     points[next].orient * (4 - 6 * mod * mod + 3 * mod * mod * mod) +
                                     points[last].orient * ((1 - mod) * (1 - mod) * (1 - mod))) * (1 / 6.0f)
-
-        );
-    }
-    return VirtualPoints;
-}
-
-vector<ControlPoint> CTrack::LinearPoints(int checkPointsCount) {
-    vector<ControlPoint> VirtualPoints;
-    for(int i = 0; i < points.size() * checkPointsCount; i++){
-        int now = i / checkPointsCount,
-            next = ( now + 1 ) % points.size();
-        float mod = i - now * checkPointsCount;
-        VirtualPoints.emplace_back(
-            (points[now].pos * (checkPointsCount - mod) +
-                                       points[next].pos * (mod)) * (1.0f / checkPointsCount),
-
-            (points[now].orient * (checkPointsCount - mod) +
-                                       points[next].orient * (mod)) * (1.0f / checkPointsCount)
 
         );
     }
@@ -513,3 +525,4 @@ ObjInfoPack CTrack::TrackTwoLine(const ControlPoint &fir, const ControlPoint &se
 void CTrack::DrawTrackRoadOneWood(const vector<ControlPoint>& trackPoints, const bool& doingShadows, const TrackLine& trackRoad, const float& trackWidth) {
 
 }
+

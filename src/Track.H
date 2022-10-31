@@ -63,8 +63,9 @@ class CTrack {
         vector<ControlPoint> (CTrack::*ComputePointsFunc[3])(int);
 
 //        vector<ControlPoint> ComputeVirtualPoints();
-        vector<ControlPoint> BspLinePoints(int checkPointsCount);
+        vector<ControlPoint> CardinalPoints(int checkPointsCount);
         vector<ControlPoint> LinearPoints(int checkPointsCount);
+        vector<ControlPoint> BspLinePoints(int checkPointsCount);
         //
 
         vector<ControlPoint> FixedArcPoints(const vector<ControlPoint>& vPoints, float minLength, float maxLength);

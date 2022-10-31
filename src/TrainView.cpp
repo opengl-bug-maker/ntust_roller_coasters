@@ -236,7 +236,7 @@ void TrainView::draw()
 	// * set the light parameters
 	//
 	//**********************************************************************
-	GLfloat lightPosition1[]	= {0,1,1,0}; // {50, 200.0, 50, 1.0};
+	GLfloat lightPosition1[]	= {0,5,0,1}; // {50, 200.0, 50, 1.0};
 	GLfloat lightPosition2[]	= {1, 0, 0, 0};
 	GLfloat lightPosition3[]	= {0, -1, 0, 0};
 	GLfloat yellowLight[]		= {0.5f, 0.5f, .1f, 1.0};
@@ -245,14 +245,19 @@ void TrainView::draw()
 	GLfloat grayLight[]			= {.3f, .3f, .3f, 1.0};
 
 	glLightfv(GL_LIGHT0, GL_POSITION, lightPosition1);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, whiteLight);
+//	glLightfv(GL_LIGHT0, GL_DIFFUSE, whiteLight);
 	glLightfv(GL_LIGHT0, GL_AMBIENT, grayLight);
-
-	glLightfv(GL_LIGHT1, GL_POSITION, lightPosition2);
-	glLightfv(GL_LIGHT1, GL_DIFFUSE, yellowLight);
-
-	glLightfv(GL_LIGHT2, GL_POSITION, lightPosition3);
-	glLightfv(GL_LIGHT2, GL_DIFFUSE, blueLight);
+    GLfloat direction[] = {0, -1, 0};
+    glLightfv(GL_LIGHT0, GL_SPECULAR, whiteLight);
+    glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION , direction);
+    glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 20.0f);
+    glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, 5.0);
+//
+//	glLightfv(GL_LIGHT1, GL_POSITION, lightPosition2);
+//	glLightfv(GL_LIGHT1, GL_DIFFUSE, yellowLight);
+//
+//	glLightfv(GL_LIGHT2, GL_POSITION, lightPosition3);
+//	glLightfv(GL_LIGHT2, GL_DIFFUSE, blueLight);
 
 
 
@@ -261,9 +266,9 @@ void TrainView::draw()
 	//*********************************************************************
 	// set to opengl fixed pipeline(use opengl 1.x draw function)
 //	glUseProgram(0);
-
+    glEnable(GL_LIGHTING);
 	setupFloor();
-	glDisable(GL_LIGHTING);
+//	glDisable(GL_LIGHTING);
 	drawFloor(200,10);
 
 
