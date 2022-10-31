@@ -27,7 +27,7 @@
 #include "Track.H"
 #include "Utilities/3dUtils.h"
 #include "TrainWindow.H"
-
+#include "Train.h"
 
 //****************************************************************************
 //
@@ -69,7 +69,7 @@ resetPoints()
 //****************************************************************************
 //
 // * Handy utility to break a string into a list of words
-//============================================================================
+//============================================================================      
 void breakString(char* str, std::vector<const char*>& words) 
 //============================================================================
 {
@@ -307,18 +307,21 @@ void CTrack::draw(bool doingShadows, TrainWindow* tw) {
     if(!doingShadows)
 //        glColor3ub(240, 60, 60);
         glColor3ubv(TrainColor);
-
+    
     //Train
-    Pnt3f trainBodySize(3, 10, 3);
+    Train train(new GLubyte[]{ 255, 0, 100 });
     int nowPos = ((int)trainU) % virtualPoints.size(), nextPos = (nowPos + 1) % virtualPoints.size();
     float midPoint = trainU - nowPos;
     Pnt3f trainPos = virtualPoints[nowPos].pos * (1 - midPoint) + virtualPoints[nextPos].pos * midPoint;
     trainPos = trainPos + Pnt3f(0, 4, 0);
 
     Pnt3f TrainDir = (virtualPoints[nextPos].pos + virtualPoints[nowPos].pos * -1);
-    DrawCube(trainPos, trainBodySize, TrainDir);
+    train.setPos(trainPos);
+    train.setRotate(TrainDir);
 
-
+    //train.setColor(new GLubyte[]{ 255, 0, 100 });
+    //DrawCube(trainPos, trainBodySize, TrainDir);
+    train.Draw(doingShadows);
 }
 
 vector <ControlPoint> CTrack::ComputeVirtualPoints() {

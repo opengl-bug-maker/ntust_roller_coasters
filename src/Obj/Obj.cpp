@@ -21,7 +21,7 @@ void Obj::Draw(bool doingShadows) {
     }else{
         glColor3ubv(infoPack.getColor());
     }
-    this->GLDraw();
+    this->GLDraw(); //實際畫東西
     glPopMatrix();
 }
 
