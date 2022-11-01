@@ -39,7 +39,7 @@ CTrack() : trainU(0)
 {
 	resetPoints();
     ComputePointsFunc[0] = &CTrack::LinearPoints;
-    ComputePointsFunc[1] = &CTrack::BspLinePoints;
+    ComputePointsFunc[1] = &CTrack::CardinalPoints;
     ComputePointsFunc[2] = &CTrack::BspLinePoints;
 
     DrawTrackLineFunc[0] = &CTrack::DrawTrackLineTwoLine;
@@ -321,7 +321,7 @@ void CTrack::draw(bool doingShadows, TrainWindow* tw) {
     Pnt3f TrainDir = (virtualPoints[nextPos].pos + virtualPoints[nowPos].pos * -1);
     DrawCube(trainPos, trainBodySize, TrainDir);
 
-    Train train();
+//    Train train();
 
 }
 
@@ -373,10 +373,35 @@ vector<ControlPoint> CTrack::LinearPoints(int checkPointsCount) {
 
 vector<ControlPoint> CTrack::CardinalPoints(int checkPointsCount) {
     vector<ControlPoint> VirtualPoints;
+    float tension = 0.5f;
     for(int i = 0; i < points.size() * checkPointsCount; i++){
+        int now = i / checkPointsCount,
+            prev = now - 1 + points.size(),
+            next = now + 1,
+            last = now + 2;
+        prev %= points.size();
+        next %= points.size();
+        last %= points.size();
+        float mod = (i / (float)checkPointsCount - now);
+        float mod2 = mod * mod;
+        float mod3 = mod2 * mod;
 
+
+
+        VirtualPoints.emplace_back(
+                                       (points[prev].pos * tension * ( - mod + 2 * mod2  - mod3 ) +
+                                        points[now].pos * ( 1 + (tension - 3) * mod2 + (2 - tension) * mod3 ) +
+                                        points[next].pos * (tension * mod + (3 - 2 * tension) * mod2 + (tension - 2) * mod3) +
+                                        points[last].pos * (-tension * mod2 + tension * mod3)),
+
+                                   (points[prev].orient * tension * ( - mod + 2 * mod2  - mod3 ) +
+                                    points[now].orient * ( 1 + (tension - 3) * mod2 + (2 - tension) * mod3 ) +
+                                    points[next].orient * (tension * mod + (3 - 2 * tension) * mod2 + (tension - 2) * mod3) +
+                                    points[last].orient * (-tension * mod2 + tension * mod3))
+
+        );
     }
-    return vector<ControlPoint>();
+    return VirtualPoints;
 }
 
 vector<ControlPoint> CTrack::BspLinePoints(int checkPointsCount) {
