@@ -25,7 +25,20 @@ add_executable(RollerCoasters
     ${SRC_DIR}TrainView.cpp
     ${SRC_DIR}TrainWindow.h
     ${SRC_DIR}TrainWindow.cpp
-    ${INCLUDE_DIR}glad4.6/src/glad.c src/Obj/Obj.cpp src/Obj/Obj.h src/Obj/TrackLine.cpp src/Obj/TrackLine.h src/Obj/Cuboid.cpp src/Obj/Cuboid.h src/Obj/ObjInfoPack.cpp src/Obj/ObjInfoPack.h)
+    ${SRC_DIR}Train.h
+    ${SRC_DIR}Train.cpp
+    ${SRC_DIR}Obj/Obj.h
+    ${SRC_DIR}Obj/Obj.cpp
+    ${SRC_DIR}Obj/ObjInfoPack.h
+    ${SRC_DIR}Obj/ObjInfoPack.cpp
+    ${SRC_DIR}Obj/ObjInfoPack.h
+    ${SRC_DIR}Obj/TrackLine.h
+    ${SRC_DIR}Obj/TrackLine.cpp
+    ${SRC_DIR}Obj/Cuboid.h
+    ${SRC_DIR}Obj/Cuboid.cpp
+    ${SRC_DIR}Obj/Cylinder.cpp
+    ${SRC_DIR}Obj/Cylinder.h
+    ${INCLUDE_DIR}glad4.6/src/glad.c )
 
 add_library(Utilities 
     ${SRC_DIR}Utilities/3DUtils.h
