@@ -331,6 +331,23 @@ setProjection()
 	// put code for train view projection here!	
 	//####################################################################
 	else {
+        glMatrixMode(GL_PROJECTION);
+        gluPerspective(100, aspect, .1, 1000);
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+
+        int nowPos = ((int)m_pTrack->trainU) % m_pTrack->virtualPoints.size(), nextPos = (nowPos + 1) % m_pTrack->virtualPoints.size();
+        float midPoint = m_pTrack->trainU - nowPos;
+        Pnt3f trainPos = m_pTrack->virtualPoints[nowPos].pos * (1 - midPoint) + m_pTrack->virtualPoints[nextPos].pos * midPoint;
+        Pnt3f trainOrient = m_pTrack->virtualPoints[nowPos].orient * (1 - midPoint) + m_pTrack->virtualPoints[nextPos].orient * midPoint;
+        trainPos = trainPos + Pnt3f(0, 10, 0);
+
+        Pnt3f TrainDir = (m_pTrack->virtualPoints[nextPos].pos + m_pTrack->virtualPoints[nowPos].pos * -1);
+
+        gluLookAt(trainPos.x, trainPos.y, trainPos.z,
+                  trainPos.x + TrainDir.x, trainPos.y + TrainDir.y,trainPos.z + TrainDir.z,
+                  trainOrient.x, trainOrient.y, trainOrient.z);
+
 #ifdef EXAMPLE_SOLUTION
 		trainCamView(this,aspect);
 #endif
