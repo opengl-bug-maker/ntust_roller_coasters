@@ -60,12 +60,12 @@ class CTrack {
         void draw(bool doingShadows, TrainWindow* tw);
 
         //
-        vector<ControlPoint> (CTrack::*ComputePointsFunc[3])(int);
+        vector<ControlPoint> (CTrack::*ComputePointsFunc[3])(int, float);
 
 //        vector<ControlPoint> ComputeVirtualPoints();
-        vector<ControlPoint> CardinalPoints(int checkPointsCount);
-        vector<ControlPoint> LinearPoints(int checkPointsCount);
-        vector<ControlPoint> BspLinePoints(int checkPointsCount);
+        vector<ControlPoint> CardinalPoints(int checkPointsCount, float data);
+        vector<ControlPoint> LinearPoints(int checkPointsCount, float data);
+        vector<ControlPoint> BspLinePoints(int checkPointsCount, float data);
         //
 
         vector<ControlPoint> FixedArcPoints(const vector<ControlPoint>& vPoints, float minLength, float maxLength);

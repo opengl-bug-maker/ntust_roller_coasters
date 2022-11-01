@@ -272,14 +272,15 @@ void CTrack::draw(bool doingShadows, TrainWindow* tw) {
     float trackWidth = 6;
     float trackLineWidth = 1;
     float trackRoadWidth = 1;
+
+    float tension = 0.5f;
     GLubyte TrackLineColor[3] = {60, 240, 60};
     GLubyte TrackRoadColor[3] = {60, 240, 60};
     GLubyte TrainColor[3] = {240, 60, 60};
 
-
     TrackLine trackLine = TrackLine(TrackLineColor, trackLineWidth);
 
-    virtualPoints = (this->*ComputePointsFunc[ComputePointIndex])(checkPointsCount);
+    virtualPoints = (this->*ComputePointsFunc[ComputePointIndex])(checkPointsCount, tension);
     if(arcLengthVersion)
         virtualPoints = FixedArcPoints(virtualPoints, arcMinLength, arcMaxLength);
 //    std::cout << "======\n\n";
@@ -353,7 +354,7 @@ void CTrack::draw(bool doingShadows, TrainWindow* tw) {
 //    return VirtualPoints;
 //}
 
-vector<ControlPoint> CTrack::LinearPoints(int checkPointsCount) {
+vector<ControlPoint> CTrack::LinearPoints(int checkPointsCount, float data = NULL) {
     vector<ControlPoint> VirtualPoints;
     for(int i = 0; i < points.size() * checkPointsCount; i++){
         int now = i / checkPointsCount,
@@ -371,9 +372,9 @@ vector<ControlPoint> CTrack::LinearPoints(int checkPointsCount) {
     return VirtualPoints;
 }
 
-vector<ControlPoint> CTrack::CardinalPoints(int checkPointsCount) {
+vector<ControlPoint> CTrack::CardinalPoints(int checkPointsCount, float data) {
     vector<ControlPoint> VirtualPoints;
-    float tension = 0.5f;
+    float tension = data;
     for(int i = 0; i < points.size() * checkPointsCount; i++){
         int now = i / checkPointsCount,
             prev = now - 1 + points.size(),
@@ -404,7 +405,7 @@ vector<ControlPoint> CTrack::CardinalPoints(int checkPointsCount) {
     return VirtualPoints;
 }
 
-vector<ControlPoint> CTrack::BspLinePoints(int checkPointsCount) {
+vector<ControlPoint> CTrack::BspLinePoints(int checkPointsCount, float data = NULL) {
     vector<ControlPoint> VirtualPoints;
 //    float checkPointCount = 20;
     for(int i = 0; i < points.size() * checkPointsCount; i++){
