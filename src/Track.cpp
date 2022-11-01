@@ -317,9 +317,11 @@ void CTrack::draw(bool doingShadows, TrainWindow* tw) {
     int nowPos = ((int)trainU) % virtualPoints.size(), nextPos = (nowPos + 1) % virtualPoints.size();
     float midPoint = trainU - nowPos;
     Pnt3f trainPos = virtualPoints[nowPos].pos * (1 - midPoint) + virtualPoints[nextPos].pos * midPoint;
-    trainPos = trainPos + Pnt3f(0, 4, 0);
+//    trainPos = trainPos + Pnt3f(0, 4, 0);
+    trainPos = trainPos + virtualPoints[nowPos].orient * 4;
 
     Pnt3f TrainDir = (virtualPoints[nextPos].pos + virtualPoints[nowPos].pos * -1);
+    TrainDir.normalize();
     DrawCube(trainPos, trainBodySize, TrainDir);
 
 //    Train train();
