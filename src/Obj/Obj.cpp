@@ -28,7 +28,6 @@ void Obj::Draw(bool doingShadows) {
 //        Top.x, Top.y, Top.z, 0,
 //        Side.x, Side.y, Side.z, 0,
 //        0, 0, 0, 1};
-//like
 //    GLfloat* rotate = new GLfloat []{
 //        Side.x, Side.y, Side.z, 0,
 //        infoPack.getFront().x, infoPack.getFront().y, infoPack.getFront().z, 0,
@@ -43,11 +42,16 @@ void Obj::Draw(bool doingShadows) {
 //        Top.x, Top.y, Top.z, 0,
 //        infoPack.getFront().x, infoPack.getFront().y, infoPack.getFront().z, 0,
 //        Side.x, Side.y, Side.z, 0,
+//        0, 0, 0, 1};
+//    GLfloat* rotate = new GLfloat []{
+//        Top.x, Top.y, Top.z, 0,
+//        Side.x, Side.y, Side.z, 0,
+//        infoPack.getFront().x, infoPack.getFront().y, infoPack.getFront().z, 0,
 //        0, 0, 0, 1};
     GLfloat* rotate = new GLfloat []{
+        infoPack.getFront().x, infoPack.getFront().y, infoPack.getFront().z, 0,
         Top.x, Top.y, Top.z, 0,
         Side.x, Side.y, Side.z, 0,
-        -infoPack.getFront().x, -infoPack.getFront().y, -infoPack.getFront().z, 0,
         0, 0, 0, 1};
 
 

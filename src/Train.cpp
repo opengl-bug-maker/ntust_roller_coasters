@@ -10,15 +10,15 @@ Train::Train(GLubyte* color){
 //    this->setSize(Pnt3f(6, 20, 6));
     Children.push_back(new Cuboid( //車身
         Pnt3f( 0, 1, 0), //pos
-        Pnt3f(6, 17, 6), //size
+        Pnt3f( 17, 6, 6), //size
 //        Pnt3f(0, 0, 0), //rotation
         Pnt3f(1, 0, 0),
         Pnt3f(0, 1, 0),
         new GLubyte[]{ 233, 29, 45 }
     ));
     Children.push_back(new Cuboid( //駕駛艙
-        Pnt3f( 7,0, 4.5), //pos
-        Pnt3f(6, 8, 6), //size
+        Pnt3f( -4.5,7, 0), //pos
+        Pnt3f(8, 6,  6), //size
 //        Pnt3f(0, 0, 0), //rotation
         Pnt3f(1, 0, 0),
         Pnt3f(0, 1, 0),
