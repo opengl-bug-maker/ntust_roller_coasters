@@ -12,7 +12,9 @@ class Cuboid : public Obj{
     void GLDraw() override;
 
 public:
-    Cuboid(const Pnt3f &pos, const Pnt3f &size, const Pnt3f &rotate, GLubyte *color);
+//    Cuboid(const Pnt3f &pos, const Pnt3f &size, const Pnt3f &rotate, GLubyte *color);
+
+    Cuboid(const Pnt3f &pos, const Pnt3f &size, const Pnt3f &front, const Pnt3f &top, GLubyte *color);
 };
 
 

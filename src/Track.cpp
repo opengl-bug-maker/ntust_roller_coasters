@@ -329,7 +329,10 @@ void CTrack::draw(bool doingShadows, TrainWindow* tw) {
 //    Rotate.normalize();
     train.setPos(trainPos);
 //    train.setRotate(TrainDir);
-    train.setRotate(Rotate);
+//    train.setRotate(Rotate);
+    train.setFront(TrainDir);
+    train.setTop(virtualPoints[nowPos].orient);
+    //todo : train orient
 
     //train.setColor(new GLubyte[]{ 255, 0, 100 });
     //DrawCube(trainPos, trainBodySize, TrainDir);
@@ -522,13 +525,17 @@ void CTrack::DrawTrackLineTwoLine(const vector<ControlPoint>& trackPoints, const
         ObjInfoPack pack0 = TrackTwoLine(fir, sec, trd, trackWidth);
         trackLine.setPos(pack0.getPos());
         trackLine.setTrackLineLength(pack0.getSize().y);
-        trackLine.setRotate(pack0.getRotate());
+//        trackLine.setRotate(pack0.getRotate());
+        trackLine.setTop(pack0.getTop());
+        trackLine.setFront(pack0.getFront());
         trackLine.Draw(doingShadows);
 
         ObjInfoPack pack1 = TrackTwoLine(trd, sec, fir, trackWidth);
         trackLine.setPos(pack1.getPos());
         trackLine.setTrackLineLength(pack1.getSize().y);
-        trackLine.setRotate(pack1.getRotate());
+//        trackLine.setRotate(pack1.getRotate());
+        trackLine.setTop(pack1.getTop());
+        trackLine.setFront(pack1.getFront());
         trackLine.Draw(doingShadows);
     }
 }
@@ -554,6 +561,8 @@ ObjInfoPack CTrack::TrackTwoLine(const ControlPoint &fir, const ControlPoint &se
         (out0 + out1) * 0.5,
         Pnt3f(1, (out1 + out0 * -1).length(), 1),
         (out1 + out0 * -1),
+        mid0.orient,
+//        Pnt3f(mid0.orient + mid1.orient) * 0.5,
         new GLubyte[]{0, 0, 0}
     );
 }

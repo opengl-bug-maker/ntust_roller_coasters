@@ -26,5 +26,8 @@ void Cylinder::GLDraw(){
     glEnd();
 }
 
-Cylinder::Cylinder(const Pnt3f& pos, const Pnt3f& size, const Pnt3f& rotate, GLubyte* color) : Obj(pos, size, rotate,
-    color) {}
+Cylinder::Cylinder(const Pnt3f &pos, const Pnt3f &size, const Pnt3f &front, const Pnt3f &top, GLubyte *color) : Obj(pos,
+                                                                                                                    size,
+                                                                                                                    front,
+                                                                                                                    top,
+                                                                                                                    color) {}

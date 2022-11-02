@@ -9,12 +9,16 @@
 #include "../Utilities/Pnt3f.H"
 
 class ObjInfoPack {
-    Pnt3f Pos, Size, Rotate;
+    Pnt3f Pos, Size;
+//    Pnt3f Rotate;
+    Pnt3f Front, Top;
     GLubyte *Color;
 public:
     ObjInfoPack();
 
-    ObjInfoPack(const Pnt3f &pos, const Pnt3f &size, const Pnt3f &rotate, GLubyte *color);
+//    ObjInfoPack(const Pnt3f &pos, const Pnt3f &size, const Pnt3f &rotate, GLubyte *color);
+
+    ObjInfoPack(const Pnt3f &pos, const Pnt3f &size, const Pnt3f &front, const Pnt3f &top, GLubyte *color);
 
     virtual ~ObjInfoPack();
 
@@ -26,9 +30,17 @@ public:
 
     void setSize(const Pnt3f &size);
 
-    const Pnt3f &getRotate() const;
+//    const Pnt3f &getRotate() const;
+//
+//    void setRotate(const Pnt3f &rotate);
 
-    void setRotate(const Pnt3f &rotate);
+    const Pnt3f &getFront() const;
+
+    void setFront(const Pnt3f &front);
+
+    const Pnt3f &getTop() const;
+
+    void setTop(const Pnt3f &top);
 
     GLubyte *getColor() const;
 

@@ -22,7 +22,9 @@ public:
 
     explicit Obj(const ObjInfoPack &infoPack);
 
-    Obj(const Pnt3f &pos, const Pnt3f &size, const Pnt3f &rotate, GLubyte *color);
+//    Obj(const Pnt3f &pos, const Pnt3f &size, const Pnt3f &rotate, GLubyte *color);
+
+    Obj(const Pnt3f &pos, const Pnt3f &size, const Pnt3f &front, const Pnt3f &top, GLubyte *color);
 
     const Pnt3f &getPos() const;
 
@@ -32,9 +34,17 @@ public:
 
     void setSize(const Pnt3f &size);
 
-    const Pnt3f &getRotate() const;
+    const Pnt3f &getFront() const;
 
-    void setRotate(const Pnt3f &rotate);
+    void setFront(const Pnt3f &front);
+
+    const Pnt3f &getTop() const;
+
+    void setTop(const Pnt3f &top);
+
+//    const Pnt3f &getRotate() const;
+//
+//    void setRotate(const Pnt3f &rotate);
 
     GLubyte *getColor() const;
 
@@ -43,6 +53,8 @@ public:
     void AddChild(Obj*);
 
     void Draw(bool doingShadows);
+
+    virtual void init();
 
 protected:
     virtual void GLDraw() = 0;

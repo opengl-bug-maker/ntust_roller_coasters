@@ -11,11 +11,16 @@
 class TrackLine : public Obj{
     float trackLineWidth;
 public:
+    void init() override;
+
     TrackLine();
 
     TrackLine(GLubyte *color, const float &trackLineWidth);
 
-    TrackLine(const Pnt3f &pos, const Pnt3f &size, const Pnt3f &rotate, GLubyte *color, const float &trackLineWidth);
+//    TrackLine(const Pnt3f &pos, const Pnt3f &size, const Pnt3f &rotate, GLubyte *color, const float &trackLineWidth);
+
+    TrackLine(const Pnt3f &pos, const Pnt3f &size, const Pnt3f &front, const Pnt3f &top, GLubyte *color,
+              float trackLineWidth);
 
     void setTrackLineLength(const float &trackLineLength);
 private:
