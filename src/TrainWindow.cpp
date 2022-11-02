@@ -141,6 +141,51 @@ TrainWindow(const int x, const int y)
 
 		pty+=30;
 
+        checkPointsCount = new Fl_Value_Slider(655,pty,140,20,"checkC");
+        checkPointsCount->range(4,10);
+        checkPointsCount->value(5);
+        checkPointsCount->align(FL_ALIGN_LEFT);
+        checkPointsCount->type(FL_HORIZONTAL);
+        checkPointsCount->callback((Fl_Callback*)damageCB,this);
+
+        pty+=25;
+
+        trackWidth = new Fl_Value_Slider(655,pty,140,20,"trackW");
+        trackWidth->range(1,10);
+        trackWidth->value(6);
+        trackWidth->align(FL_ALIGN_LEFT);
+        trackWidth->type(FL_HORIZONTAL);
+        trackWidth->type(FL_HORIZONTAL);
+        trackWidth->callback((Fl_Callback*)damageCB,this);
+
+        pty+=25;
+
+        trackLineWidth = new Fl_Value_Slider(655,pty,140,20,"trackLW");
+        trackLineWidth->range(1,10);
+        trackLineWidth->value(1);
+        trackLineWidth->align(FL_ALIGN_LEFT);
+        trackLineWidth->type(FL_HORIZONTAL);
+        trackLineWidth->callback((Fl_Callback*)damageCB,this);
+
+        pty+=25;
+
+        trackRoadWidth = new Fl_Value_Slider(655,pty,140,20,"trackRW");
+        trackRoadWidth->range(1,10);
+        trackRoadWidth->value(1);
+        trackRoadWidth->align(FL_ALIGN_LEFT);
+        trackRoadWidth->type(FL_HORIZONTAL);
+        trackRoadWidth->callback((Fl_Callback*)damageCB,this);
+
+        pty+=25;
+
+        tension = new Fl_Value_Slider(655,pty,140,20,"tension");
+        tension->range(0,1);
+        tension->value(0.5f);
+        tension->align(FL_ALIGN_LEFT);
+        tension->type(FL_HORIZONTAL);
+        tension->callback((Fl_Callback*)damageCB,this);
+
+        pty+=25;
 		// TODO: add widgets for all of your fancier features here
 #ifdef EXAMPLE_SOLUTION
 		makeExampleWidgets(this,pty);

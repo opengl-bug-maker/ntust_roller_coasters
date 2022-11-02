@@ -93,6 +93,14 @@ class TrainWindow : public Fl_Double_Window {
 
 		// we have other widgets as part of the sample solution
 		// this is not for 559 students to know about
+
+        Fl_Value_Slider*	checkPointsCount;
+        Fl_Value_Slider*	trackWidth;
+        Fl_Value_Slider*	trackLineWidth;
+        Fl_Value_Slider*	trackRoadWidth;
+        Fl_Value_Slider*	tension;
+
+
 #ifdef EXAMPLE_SOLUTION
 	ExampleWidgets ew;
 #endif

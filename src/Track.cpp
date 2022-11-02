@@ -267,13 +267,14 @@ void CTrack::draw(bool doingShadows, TrainWindow* tw) {
 
     bool arcLengthVersion = tw->arcLength->value();
 
-    int checkPointsCount = 5;
+    int checkPointsCount = tw->checkPointsCount->value();
     float arcMinLength = 3, arcMaxLength = 4;
-    float trackWidth = 6;
-    float trackLineWidth = 1;
-    float trackRoadWidth = 1;
+    float trackWidth = tw->trackWidth->value();
+    float trackLineWidth = tw->trackLineWidth->value();
+    float trackRoadWidth = tw->trackRoadWidth->value();
 
-    float tension = 0.5f;
+    float tension = tw->tension->value();
+
     GLubyte TrackLineColor[3] = {60, 240, 60};
     GLubyte TrackRoadColor[3] = {60, 240, 60};
     GLubyte TrainColor[3] = {240, 60, 60};
@@ -321,9 +322,14 @@ void CTrack::draw(bool doingShadows, TrainWindow* tw) {
     trainPos = trainPos + virtualPoints[nowPos].orient * 4;
 
     Pnt3f TrainDir = (virtualPoints[nextPos].pos + virtualPoints[nowPos].pos * -1);
+    Pnt3f Rotate = Pnt3f(TrainDir.x,
+                         virtualPoints[nowPos].orient.y,
+                         TrainDir.z);
     TrainDir.normalize();
+//    Rotate.normalize();
     train.setPos(trainPos);
-    train.setRotate(TrainDir);
+//    train.setRotate(TrainDir);
+    train.setRotate(Rotate);
 
     //train.setColor(new GLubyte[]{ 255, 0, 100 });
     //DrawCube(trainPos, trainBodySize, TrainDir);
