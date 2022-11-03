@@ -266,6 +266,7 @@ void DrawCube(Pnt3f now, Pnt3f next, float cubeWidth) {
 //}
 
 void CTrack::draw(bool doingShadows, TrainWindow* tw) {
+    t = tw;
     int ComputePointIndex = tw->splineBrowser->value() - 1;
     int DrawTrackLineIndex = 0;
     int DrawTrackRoadIndex = 0;
@@ -286,6 +287,7 @@ void CTrack::draw(bool doingShadows, TrainWindow* tw) {
     GLubyte TrainColor[3] = { 240, 60, 60 };
 
     TrackLine trackLine = TrackLine(TrackLineColor, trackLineWidth);
+    TrackRoad trackRoad = TrackRoad(TrackRoadColor, trackRoadWidth);
 
     virtualPoints = (this->*ComputePointsFunc[ComputePointIndex])(checkPointsCount, tension);
     if (arcLengthVersion)
@@ -301,7 +303,7 @@ void CTrack::draw(bool doingShadows, TrainWindow* tw) {
     //    if(!doingShadows)
     (this->*DrawTrackLineFunc[DrawTrackLineIndex])(virtualPoints, doingShadows, trackLine, trackWidth);
     //    if(!doingShadows)
-    (this->*DrawTrackRoadFunc[DrawTrackRoadIndex])(virtualPoints, doingShadows, trackLine, trackWidth);
+    (this->*DrawTrackRoadFunc[DrawTrackRoadIndex])(virtualPoints, doingShadows, trackRoad, trackWidth);
 
     //    DrawTrack(virtualPoints, doingShadows, trackWidth, trackLineWidth, trackRoadWidth, TrackLineColor, TrackRoadColor);
 
@@ -595,8 +597,19 @@ ObjInfoPack CTrack::TrackTwoLine(const ControlPoint& fir, const ControlPoint& se
     );
 }
 
-void CTrack::DrawTrackRoadOneWood(const vector<ControlPoint>& trackPoints, const bool& doingShadows, const TrackLine& trackRoad, const float& trackWidth) {
+void CTrack::DrawTrackRoadOneWood(const vector<ControlPoint>& trackPoints, const bool& doingShadows, TrackRoad& trackRoad, const float& trackWidth) {
+    int step = t->checkPointsCount->value() / 5;
+    if(t->arcLength->value()) step = (int)(10.0f / ArcLength);
+    for (int i = 0; i < trackPoints.size(); i += step) {
+        ControlPoint fir = trackPoints[i];
+        ControlPoint sec = trackPoints[(i + 1) % trackPoints.size()];
 
+        trackRoad.setPos(fir.pos);
+        trackRoad.setTrackRoadLength(trackWidth * 2);
+        trackRoad.setFront((sec.pos + fir.pos * -1));
+        trackRoad.setTop(fir.orient);
+        trackRoad.Draw(doingShadows);
+    }
 }
 
 float CTrack::getArcV() const{

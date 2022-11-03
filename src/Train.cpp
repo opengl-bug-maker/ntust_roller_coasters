@@ -2,6 +2,7 @@
 #include "Obj/Cuboid.h"
 #include "Obj/Cylinder.h"
 #include "Obj/Sphere.h"
+#include "wheels.h"
 Train::Train() :Obj() {
     this->setSize(Pnt3f(6, 20, 6));
 
@@ -42,7 +43,7 @@ Train::Train(GLubyte* color){
         new GLubyte[]{200, 200, 10}
     ));
 //
-    Children.push_back(new Cylinder( //輪子1
+    Children.push_back(new Wheel( //輪子1
         Pnt3f(5, -1, 3.25),
         Pnt3f(2, 0.5,  2),
         //Pnt3f(0, 0, 90),
@@ -50,7 +51,7 @@ Train::Train(GLubyte* color){
         Pnt3f(0, 0, 1),
         new GLubyte[]{ 200, 200, 10 }
     ));
-    Children.push_back(new Cylinder( //輪子2
+    Children.push_back(new Wheel( //輪子2
         Pnt3f(-5, -0.5, 3.25),
         Pnt3f(3, 0.5, 3),
         //Pnt3f(0, 0, 90),
@@ -58,7 +59,7 @@ Train::Train(GLubyte* color){
         Pnt3f(0, 0, 1),
         new GLubyte[]{ 200, 200, 10 }
     ));
-    Children.push_back(new Cylinder( //輪子3
+    Children.push_back(new Wheel( //輪子3
         Pnt3f(5, -1, -3.25),
         Pnt3f(2, 0.5, 2),
         //Pnt3f(0, 0, 90),
@@ -66,7 +67,7 @@ Train::Train(GLubyte* color){
         Pnt3f(0, 0, -1),
         new GLubyte[]{ 200, 200, 10 }
     ));
-    Children.push_back(new Cylinder( //輪子4
+    Children.push_back(new Wheel ( //輪子4
         Pnt3f(-5, -0.5, -3.25),
         Pnt3f(3, 0.5, 3),
         //Pnt3f(0, 0, 90),
