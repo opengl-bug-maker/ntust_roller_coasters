@@ -407,6 +407,20 @@ void CTrack::draw(bool doingShadows, TrainWindow* tw) {
         car.setWheels(trainU * TotalArcLength / virtualPoints.size());
         car.Draw(doingShadows);
     }
+
+    //tunnel
+    int step = t->checkPointsCount->value() / 5;
+    if(t->arcLength->value()) step = (int)(10.0f / ArcLength);
+    for (int i = 0; i < virtualPoints.size() / 8; i += step) {
+        ControlPoint fir = virtualPoints[i];
+        ControlPoint sec = virtualPoints[(i + 1) % virtualPoints.size()];
+
+        Tunnel tunnel = Tunnel(fir.pos, trackWidth * 2, 15);
+        tunnel.setPos(fir.pos);
+        tunnel.setFront((sec.pos + fir.pos * -1));
+        tunnel.setTop(fir.orient);
+        tunnel.Draw(doingShadows);
+    }
 }
 
 //vector <ControlPoint> CTrack::ComputeVirtualPoints() {
