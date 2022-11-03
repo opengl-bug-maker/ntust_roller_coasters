@@ -4,6 +4,9 @@ public:
 	Train();
 	Train(GLubyte* color);
     void setWheels(float length);
+
+    void init() override;
+
 private:
 	void GLDraw() override;
 };

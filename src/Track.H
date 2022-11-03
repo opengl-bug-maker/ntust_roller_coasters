@@ -43,6 +43,7 @@ using std::vector; // avoid having to say std::vector all of the time
 #include "Obj/ObjInfoPack.h"
 #include "SupportStructure.h"
 #include "Tunnel.h"
+#include "Train.h"
 
 class CTrack {
 	public:		
@@ -108,4 +109,6 @@ class CTrack {
         float getArcV() const;
         float getPhysicsV(float trainU) const;
         TrainWindow* t;
+
+        Train train;
 };

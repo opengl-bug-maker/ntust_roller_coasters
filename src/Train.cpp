@@ -3,13 +3,8 @@
 #include "Obj/Cylinder.h"
 #include "Obj/Sphere.h"
 #include "wheels.h"
-Train::Train() :Obj() {
-//    this->setSize(Pnt3f(6, 20, 6));
-
-}
-
-Train::Train(GLubyte* color){
-//    this->setSize(Pnt3f(6, 20, 6));
+void Train::init() {
+    Obj::init();
     Children.push_back(new Cuboid( //車身
         Pnt3f( 0, 1, 0), //pos
         Pnt3f( 17, 6, 6), //size
@@ -77,6 +72,17 @@ Train::Train(GLubyte* color){
     ));
 }
 
+Train::Train() :Obj() {
+//    this->setSize(Pnt3f(6, 20, 6));
+    init();
+
+}
+
+Train::Train(GLubyte* color){
+//    this->setSize(Pnt3f(6, 20, 6));
+    init();
+}
+
 void Train::GLDraw(){
     //glBegin(GL_QUADS);
     //glNormal3f(0, 0, 1);
@@ -124,6 +130,7 @@ void Train::setWheels(float length) {
     ((Wheel*)Children[6])->setWheels(length);
     ((Wheel*)Children[7])->setWheels(length);
 }
+
 
 
 Car::Car() :Obj() { }

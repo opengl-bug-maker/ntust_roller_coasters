@@ -27,7 +27,6 @@
 #include "Track.H"
 #include "Utilities/3dUtils.h"
 #include "TrainWindow.H"
-#include "Train.h"
 #include "Smoke.h"
 
 //****************************************************************************
@@ -344,7 +343,7 @@ void CTrack::draw(bool doingShadows, TrainWindow* tw) {
 //    car.Draw(doingShadows);
 
     //Train
-    Train train(new GLubyte[]{ 255, 0, 100 });
+//    Train train(new GLubyte[]{ 255, 0, 100 });
     int nowPos = ((int)trainU) % virtualPoints.size(), nextPos = (nowPos + 1) % virtualPoints.size();
     float midPoint = trainU - nowPos;
     Pnt3f trainPos = virtualPoints[nowPos].pos * (1 - midPoint) + virtualPoints[nextPos].pos * midPoint;
