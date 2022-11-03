@@ -44,7 +44,7 @@ Train::Train(GLubyte* color){
     ));
 //
     Children.push_back(new Wheel( //輪子1
-        Pnt3f(5, -1, 3.25),
+        Pnt3f(5, -1.5, 3.25),
         Pnt3f(2, 0.5,  2),
         //Pnt3f(0, 0, 90),
         Pnt3f(1, 0, 0),
@@ -60,7 +60,7 @@ Train::Train(GLubyte* color){
         new GLubyte[]{ 200, 200, 10 }
     ));
     Children.push_back(new Wheel( //輪子3
-        Pnt3f(5, -1, -3.25),
+        Pnt3f(5, -1.5, -3.25),
         Pnt3f(2, 0.5, 2),
         //Pnt3f(0, 0, 90),
         Pnt3f(1, 0, 0),
@@ -160,5 +160,37 @@ Car::Car(GLubyte* color){
         Pnt3f(1, 0, 0),
         Pnt3f(0, 1, 0),
         new GLubyte[]{ 0, 0, 0 }
+    ));
+
+    Children.push_back(new Wheel( // Left Front
+        Pnt3f(5, -1, 3.25),
+        Pnt3f(2, 0.5,  2),
+        Pnt3f(1, 0, 0),
+        Pnt3f(0, 0, 1),
+        new GLubyte[]{ 200, 200, 10 }
+    ));
+
+    Children.push_back(new Wheel( // Right Front
+        Pnt3f(5, -1, -3.25),
+        Pnt3f(2, 0.5, 2),
+        Pnt3f(1, 0, 0),
+        Pnt3f(0, 0, -1),
+        new GLubyte[]{ 200, 200, 10 }
+    ));
+
+    Children.push_back(new Wheel( // Left Back
+        Pnt3f(-5, -1, 3.25),
+        Pnt3f(2, 0.5,  2),
+        Pnt3f(1, 0, 0),
+        Pnt3f(0, 0, 1),
+        new GLubyte[]{ 200, 200, 10 }
+    ));
+
+    Children.push_back(new Wheel ( // Right Back
+        Pnt3f(-5, -1, -3.25),
+        Pnt3f(2, 0.5,  2),
+        Pnt3f(1, 0, 0),
+        Pnt3f(0, 0, -1),
+        new GLubyte[]{ 200, 200, 10 }
     ));
 }
