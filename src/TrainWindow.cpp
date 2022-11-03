@@ -142,8 +142,8 @@ TrainWindow(const int x, const int y)
 		pty+=30;
 
         checkPointsCount = new Fl_Value_Slider(655,pty,140,20,"checkC");
-        checkPointsCount->range(4,10);
-        checkPointsCount->value(5);
+        checkPointsCount->range(40,500);
+        checkPointsCount->value(50);
         checkPointsCount->align(FL_ALIGN_LEFT);
         checkPointsCount->type(FL_HORIZONTAL);
         checkPointsCount->callback((Fl_Callback*)damageCB,this);

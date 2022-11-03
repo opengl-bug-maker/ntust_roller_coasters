@@ -340,7 +340,8 @@ void CTrack::draw(bool doingShadows, TrainWindow* tw) {
 
     //train.setColor(new GLubyte[]{ 255, 0, 100 });
     //DrawCube(trainPos, trainBodySize, TrainDir);
-    train.Draw(doingShadows);
+    if(!tw->trainCam->value())
+        train.Draw(doingShadows);
 }
 
 //vector <ControlPoint> CTrack::ComputeVirtualPoints() {

@@ -340,7 +340,7 @@ setProjection()
         float midPoint = m_pTrack->trainU - nowPos;
         Pnt3f trainPos = m_pTrack->virtualPoints[nowPos].pos * (1 - midPoint) + m_pTrack->virtualPoints[nextPos].pos * midPoint;
         Pnt3f trainOrient = m_pTrack->virtualPoints[nowPos].orient * (1 - midPoint) + m_pTrack->virtualPoints[nextPos].orient * midPoint;
-        trainPos = trainPos + Pnt3f(0, 10, 0);
+        trainPos = trainPos + m_pTrack->virtualPoints[nowPos].orient * 12;
 
         Pnt3f TrainDir = (m_pTrack->virtualPoints[nextPos].pos + m_pTrack->virtualPoints[nowPos].pos * -1);
 
