@@ -9,11 +9,11 @@ float get_random_float() {
 }
 Smoke::Smoke() :Obj() {
     srand(time(NULL));
-    int count = 10;
+    int count = 50;
     
     for (int i = 0; i < count; i++) {
         GLubyte color = (GLubyte)(90 + get_random_float() * 10);
-        Children.push_back(new Sphere(
+        Children.push_back(new Cuboid(
             Pnt3f(get_random_float() * 4, get_random_float() + 2, get_random_float() * 4),
             Pnt3f(0.6+0.1* get_random_float(), 0.7+0.1* get_random_float(), 0.6 + 0.1 * get_random_float()),
             Pnt3f(1, 0, 0),
