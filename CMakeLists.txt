@@ -44,8 +44,8 @@ add_executable(RollerCoasters
 	${SRC_DIR}wheels.cpp
 	${SRC_DIR}Smoke.h
 	${SRC_DIR}Smoke.cpp
-	${SRC_DIR}Tunnel.h
-	${SRC_DIR}Tunnel.cpp
+	#${SRC_DIR}Tunnel.h
+	#${SRC_DIR}Tunnel.cpp
 	${SRC_DIR}SupportStructure.h
 	${SRC_DIR}SupportStructure.cpp
 	${SRC_DIR}Obj/TrackRoad.h
