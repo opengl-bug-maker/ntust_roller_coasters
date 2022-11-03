@@ -38,7 +38,7 @@ add_executable(RollerCoasters
     ${SRC_DIR}Obj/Cuboid.cpp
     ${SRC_DIR}Obj/Cylinder.cpp
     ${SRC_DIR}Obj/Cylinder.h
-    ${INCLUDE_DIR}glad4.6/src/glad.c )
+    ${INCLUDE_DIR}glad4.6/src/glad.c src/Obj/TrackRoad.cpp src/Obj/TrackRoad.h)
 
 add_library(Utilities 
     ${SRC_DIR}Utilities/3DUtils.h

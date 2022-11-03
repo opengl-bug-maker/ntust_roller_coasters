@@ -39,6 +39,7 @@ using std::vector; // avoid having to say std::vector all of the time
 #include "Obj/Obj.h"
 #include "Obj/Cuboid.h"
 #include "Obj/TrackLine.h"
+#include "Obj/TrackRoad.h"
 #include "Obj/ObjInfoPack.h"
 
 class CTrack {
@@ -82,8 +83,8 @@ class CTrack {
         void DrawTrackLineTwoLine(const vector<ControlPoint>& trackPoints, const bool& doingShadows, TrackLine& trackLine,const float& trackWidth);
         ObjInfoPack TrackTwoLine(const ControlPoint& fir, const ControlPoint& sec, const ControlPoint& trd, const float& trackWidth);
 
-        void (CTrack::*DrawTrackRoadFunc[3])(const vector<ControlPoint>&, const bool&, const TrackLine&,const float&);
-        void DrawTrackRoadOneWood(const vector<ControlPoint>& trackPoints, const bool& doingShadows, const TrackLine& trackRoad,const float& trackWidth);
+        void (CTrack::*DrawTrackRoadFunc[3])(const vector<ControlPoint>&, const bool&, TrackRoad&,const float&);
+        void DrawTrackRoadOneWood(const vector<ControlPoint>& trackPoints, const bool& doingShadows, TrackRoad& trackRoad,const float& trackWidth);
         //
 	public:
 		// rather than have generic objects, we make a special case for these few
@@ -103,4 +104,5 @@ class CTrack {
         float maxHeight = 1;
         float getArcV() const;
         float getPhysicsV(float trainU) const;
+        TrainWindow* t;
 };
