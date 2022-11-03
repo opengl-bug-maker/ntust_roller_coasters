@@ -47,7 +47,7 @@ class Pnt3f {
 		// Pnt3f(const Pnt3f&);		
 
 	public:
-        float length();
+        float length() const;
 		// if you want to treat this thing as a C vector (point to float)
 		float* v();
 
@@ -61,6 +61,8 @@ class Pnt3f {
 
 		// note - the operators above are for Pnt3f*scalar, here we have scalar*Pnt3f
 		friend Pnt3f operator * (const float s, const Pnt3f& p );
+
+        float dot(const Pnt3f& p) const;
 
 	public:
 		// for simplicity, we just make this public so everything can access
@@ -80,7 +82,7 @@ class Pnt3f {
 // *
 //=============================================================================
 inline float Pnt3f::
-length()
+length() const
 //=============================================================================
 {
     return sqrt(x*x + y*y + z*z);
@@ -134,12 +136,23 @@ operator + (const Pnt3f& p) const
 // * cross product
 //=============================================================================
 inline Pnt3f Pnt3f::
-operator*(const Pnt3f& p) const 
+operator*(const Pnt3f& p) const
 //=============================================================================
 {
-	Pnt3f q;
-	q.x = p.z * y - p.y * z;
-	q.y = p.x * z - p.z * x;
-	q.z = p.y * x - p.x * y;
-	return q;
+    Pnt3f q;
+    q.x = p.z * y - p.y * z;
+    q.y = p.x * z - p.z * x;
+    q.z = p.y * x - p.x * y;
+    return q;
+};
+
+//*****************************************************************************
+//
+// * dot product
+//=============================================================================
+inline float Pnt3f::
+dot(const Pnt3f& p) const
+//=============================================================================
+{
+    return x * p.x + y * p.y + z * p.z;
 };

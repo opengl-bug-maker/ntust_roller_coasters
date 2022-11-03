@@ -477,8 +477,23 @@ vector<ControlPoint> CTrack::FixedArcPoints(const vector<ControlPoint>& vPoints,
             copy[prev].orient * ((PointsLength[lastPos] - nowLength) / minus) + copy[lastPos].orient * ((nowLength - PointsLength[prev]) / minus)
         );
     }
-
+    physicsPoints(arcPoints);
     return arcPoints;
+}
+
+vector<ControlPoint> CTrack::physicsPoints(const vector<ControlPoint> &vPoints) {
+    ControlPoint HighestPoint = vPoints[0].pos;
+    float min = Gravity.dot(vPoints[0].pos);
+    for (const ControlPoint& p : vPoints) {
+        float f = Gravity.dot(p.pos);
+        if(f < min){
+            min = f;
+            HighestPoint = p;
+        }
+    }
+    maxHeight = -min / Gravity.length();
+
+    return vector<ControlPoint>();
 }
 
 //void DrawTrackLine(const vector<ControlPoint>& trackPoints, float trackWidth, float trackLineWidth){
@@ -579,4 +594,13 @@ void CTrack::DrawTrackRoadOneWood(const vector<ControlPoint>& trackPoints, const
 
 float CTrack::getArcV() const{
     return 10.0f / ArcLength;
+}
+
+float CTrack::getPhysicsV(float trainU) const {
+    int nowPos = ((int)trainU) % virtualPoints.size(), nextPos = (nowPos + 1) % virtualPoints.size();
+    float midPoint = trainU - nowPos;
+    Pnt3f trainPos = virtualPoints[nowPos].pos * (1 - midPoint) + virtualPoints[nextPos].pos * midPoint;
+    float H = maxHeight + trainPos.dot(Gravity) / Gravity.length();
+    float V = sqrt(2 * Gravity.length() * H);
+    return getArcV() + V / ArcLength;
 }

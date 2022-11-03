@@ -263,7 +263,8 @@ advanceTrain(float dir)
         float vel = dir * (float)speed->value();
         //todo : v to version arcLen
 //        m_Track.trainU +=  dir * ((float)speed->value() * .1f);
-        m_Track.trainU +=  dir * ((float)m_Track.getArcV() * (float)speed->value() * .1f);
+//        m_Track.trainU +=  dir * ((float)m_Track.getArcV() * (float)speed->value() * .1f);
+        m_Track.trainU +=  dir * ((float)m_Track.getPhysicsV(m_Track.trainU) * (float)speed->value() * .1f);
     } else {
         m_Track.trainU +=  dir * ((float)speed->value() * .1f);
     }

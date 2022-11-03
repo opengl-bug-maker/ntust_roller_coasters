@@ -71,6 +71,11 @@ class CTrack {
         vector<ControlPoint> FixedArcPoints(const vector<ControlPoint>& vPoints, float minLength, float maxLength);
 
         //
+
+        /// need Arc Points
+        vector<ControlPoint> physicsPoints(const vector<ControlPoint>& vPoints);
+
+        //
 //        void DrawTrack(const vector<ControlPoint>& trackPoints, bool doingShadows, float trackWidth, float trackLineWidth, float trackRoadWidth, GLubyte* trackLineColor, GLubyte* trackRoadColor);
 
         void (CTrack::*DrawTrackLineFunc[3])(const vector<ControlPoint>&, const bool&, TrackLine&, const float&);
@@ -93,6 +98,9 @@ class CTrack {
 		// the state of the train - basically, all I need to remember is where
 		// it is in parameter space
 		float trainU;
+        Pnt3f Gravity = Pnt3f(0, -10, 0);
         float ArcLength = 1;
+        float maxHeight = 1;
         float getArcV() const;
+        float getPhysicsV(float trainU) const;
 };
