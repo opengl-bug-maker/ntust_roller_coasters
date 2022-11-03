@@ -12,5 +12,5 @@ public:
 	Car();
 	Car(GLubyte* color);
 private:
-	void GLDraw() override;
+	void GLDraw() override {};
 };
