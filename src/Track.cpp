@@ -387,7 +387,7 @@ void CTrack::draw(bool doingShadows, TrainWindow* tw) {
         train.Draw(doingShadows);
 
 //    Cars
-    Car car = Car(new GLubyte[]{255, 255, 255});
+    Car car = Car(new GLubyte[]{ 233, 29, 45 });
     float trainu = trainU;
     for(int i = 0; i < CarsCount; i++){
         trainu -= 18 / ArcLength;

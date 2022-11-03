@@ -134,7 +134,8 @@ Car::Car(GLubyte* color){
         Pnt3f( 15, 7, 1), //size
         Pnt3f(1, 0, 0),
         Pnt3f(0, 1, 0),
-        new GLubyte[]{ 0, 0, 0 }
+//        new GLubyte[]{ 0, 0, 0 }
+        color
     ));
 
     Children.push_back(new Cuboid( // Right wall
@@ -142,7 +143,8 @@ Car::Car(GLubyte* color){
         Pnt3f( 15, 7, 1), //size
         Pnt3f(1, 0, 0),
         Pnt3f(0, 1, 0),
-        new GLubyte[]{ 0, 0, 0 }
+//        new GLubyte[]{ 0, 0, 0 }
+        color
     ));
 
     Children.push_back(new Cuboid( // Front wall
@@ -150,7 +152,8 @@ Car::Car(GLubyte* color){
         Pnt3f( 1, 7, 6), //size
         Pnt3f(1, 0, 0),
         Pnt3f(0, 1, 0),
-        new GLubyte[]{ 0, 0, 0 }
+//        new GLubyte[]{ 0, 0, 0 }
+        color
     ));
 
     Children.push_back(new Cuboid( // Back wall
@@ -158,7 +161,8 @@ Car::Car(GLubyte* color){
         Pnt3f( 1, 7, 6), //size
         Pnt3f(1, 0, 0),
         Pnt3f(0, 1, 0),
-        new GLubyte[]{ 0, 0, 0 }
+//        new GLubyte[]{ 0, 0, 0 }
+        color
     ));
 
     Children.push_back(new Cuboid( // Bottom
@@ -166,7 +170,8 @@ Car::Car(GLubyte* color){
         Pnt3f( 17, 1, 6), //size
         Pnt3f(1, 0, 0),
         Pnt3f(0, 1, 0),
-        new GLubyte[]{ 0, 0, 0 }
+//        new GLubyte[]{ 0, 0, 0 }
+        color
     ));
 
     Children.push_back(new Wheel( // Left Front

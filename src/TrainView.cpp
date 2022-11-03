@@ -279,6 +279,9 @@ void TrainView::draw()
 	glEnable(GL_LIGHTING);
 	setupObjects();
 
+    glEnable(GL_AUTO_NORMAL);
+    glEnable(GL_NORMALIZE);
+
 	drawStuff();
 
 	// this time drawing is for shadows (except for top view)
