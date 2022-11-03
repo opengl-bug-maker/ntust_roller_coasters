@@ -8,12 +8,14 @@ void Cylinder::GLDraw(){
     glBegin(GL_QUAD_STRIP);
     const float rate = 2;
     for (int j = 0; j <= 360; j+= rate) {
+        glNormal3f(cos(to_degree(j)), 0, sin(to_degree(j)));
         glVertex3f(cos(to_degree(j)), 1, sin(to_degree(j)));
         glVertex3f(cos(to_degree(j)), -1, sin(to_degree(j)));
     }
 
     glBegin(GL_POLYGON);
     for (int j = 0; j <= 360; j += rate) {
+        glNormal3f(0, 1, 0);
         glVertex3f(cos(to_degree(j)), 1, sin(to_degree(j)));
     }
     glEnd();
@@ -21,6 +23,7 @@ void Cylinder::GLDraw(){
 
     glBegin(GL_POLYGON);
     for (int j = 0; j <= 360; j += rate) {
+        glNormal3f(0, -1, 0);
         glVertex3f(cos(to_degree(j)), -1, sin(to_degree(j)));
     }
     glEnd();

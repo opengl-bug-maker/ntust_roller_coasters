@@ -28,6 +28,7 @@
 #include "Utilities/3dUtils.h"
 #include "TrainWindow.H"
 #include "Train.h"
+#include "Smoke.h"
 
 //****************************************************************************
 //
@@ -340,6 +341,12 @@ void CTrack::draw(bool doingShadows, TrainWindow* tw) {
     train.setFront(TrainDir);
     train.setTop(virtualPoints[nowPos].orient);
     //todo : train orient
+    // 
+    // Smoke 
+    Smoke smoke;
+    trainPos = (virtualPoints[nowPos].pos * (1 - midPoint) + virtualPoints[nextPos].pos * midPoint) + virtualPoints[nowPos].orient * 16 + TrainDir * 2;
+    smoke.setPos(trainPos);
+    smoke.Draw(doingShadows);
 
     //train.setColor(new GLubyte[]{ 255, 0, 100 });
     //DrawCube(trainPos, trainBodySize, TrainDir);
