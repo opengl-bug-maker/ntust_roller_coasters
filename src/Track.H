@@ -101,6 +101,7 @@ class CTrack {
 		float trainU;
         Pnt3f Gravity = Pnt3f(0, -10, 0);
         float ArcLength = 1;
+        float TotalArcLength = 1;
         float maxHeight = 1;
         float getArcV() const;
         float getPhysicsV(float trainU) const;

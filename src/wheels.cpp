@@ -15,7 +15,7 @@ Wheel::Wheel(const Pnt3f& pos, const Pnt3f& size, const Pnt3f& front, const Pnt3
     color) {
     Children.push_back(new Cuboid(
         Pnt3f(0, 0, 0),
-        Pnt3f(0.5, 3, 0.5),
+        Pnt3f(0.75, 3, 0.25),
         //Pnt3f(0, 0, 90),
         Pnt3f(1, 0, 1),
         Pnt3f(0, 1, 0),
@@ -30,4 +30,12 @@ Wheel::Wheel(const Pnt3f& pos, const Pnt3f& size, const Pnt3f& front, const Pnt3
         color
     ));
 
+}
+
+void Wheel::setWheels(float length) {
+    //直徑 = 4
+    float wheelLength = getSize().x * 2 * 3.1415926;
+    float circleCount = length / wheelLength;
+    float theta = circleCount * 2 * 3.1415926;
+    setFront(Pnt3f(cos(-theta) , sin(-theta), 0));
 }

@@ -340,6 +340,7 @@ void CTrack::draw(bool doingShadows, TrainWindow* tw) {
     //    train.setRotate(Rotate);
     train.setFront(TrainDir);
     train.setTop(virtualPoints[nowPos].orient);
+    train.setWheels(trainU * TotalArcLength / virtualPoints.size());
     //todo : train orient
     // 
     // Smoke 
@@ -471,6 +472,7 @@ vector<ControlPoint> CTrack::FixedArcPoints(const vector<ControlPoint>& vPoints,
     }
     int ArcPointCount = (PointsLength[copy.size() - 1] / minLength + PointsLength[copy.size() - 1] / maxLength) / 2;
     ArcLength = PointsLength[copy.size() - 1] / ArcPointCount;
+    TotalArcLength = PointsLength[copy.size() - 1];
 
     int lastPos = 0;
 

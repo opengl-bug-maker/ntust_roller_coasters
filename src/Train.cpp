@@ -4,7 +4,7 @@
 #include "Obj/Sphere.h"
 #include "wheels.h"
 Train::Train() :Obj() {
-    this->setSize(Pnt3f(6, 20, 6));
+//    this->setSize(Pnt3f(6, 20, 6));
 
 }
 
@@ -116,6 +116,13 @@ void Train::GLDraw(){
     //glVertex3f(-0.5, -0.5, -0.5);
     //glVertex3f(-0.5, -0.5, 0.5);
     //glEnd();
+}
+
+void Train::setWheels(float length) {
+    ((Wheel*)Children[4])->setWheels(length);
+    ((Wheel*)Children[5])->setWheels(length);
+    ((Wheel*)Children[6])->setWheels(length);
+    ((Wheel*)Children[7])->setWheels(length);
 }
 
 
