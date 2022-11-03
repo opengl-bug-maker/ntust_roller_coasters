@@ -201,3 +201,10 @@ Car::Car(GLubyte* color){
         new GLubyte[]{ 200, 200, 10 }
     ));
 }
+
+void Car::setWheels(float length) {
+    ((Wheel*)Children[5])->setWheels(length);
+    ((Wheel*)Children[6])->setWheels(length);
+    ((Wheel*)Children[7])->setWheels(length);
+    ((Wheel*)Children[8])->setWheels(length);
+}

@@ -289,6 +289,9 @@ void CTrack::draw(bool doingShadows, TrainWindow* tw) {
     TrackLine trackLine = TrackLine(TrackLineColor, trackLineWidth);
     TrackRoad trackRoad = TrackRoad(TrackRoadColor, trackRoadWidth);
 
+    int CarsCount = 3;
+
+
     virtualPoints = (this->*ComputePointsFunc[ComputePointIndex])(checkPointsCount, tension);
     if (arcLengthVersion)
         virtualPoints = FixedArcPoints(virtualPoints, arcMinLength, arcMaxLength);
@@ -321,23 +324,35 @@ void CTrack::draw(bool doingShadows, TrainWindow* tw) {
         //        glColor3ub(240, 60, 60);
         glColor3ubv(TrainColor);
 
+
+//
+//    trainu += 10 / ArcLength;
+//    while(trainu > virtualPoints.size()){
+//        trainu -= virtualPoints.size();
+//    }
+//    int _nowPos = ((int)trainu) % virtualPoints.size();
+//    int _nextPos = (_nowPos + 1) % virtualPoints.size();
+//    float _midPoint = trainu - _nowPos;
+//    Pnt3f _trainPos = virtualPoints[_nowPos].pos * (1 - _midPoint) + virtualPoints[_nextPos].pos * _midPoint;
+//    _trainPos = _trainPos + virtualPoints[_nowPos].orient * 4;
+//    Pnt3f _TrainDir = (virtualPoints[_nextPos].pos + virtualPoints[_nowPos].pos * -1);
+//    _TrainDir.normalize();
+//    car.setPos(_trainPos);
+//    car.setFront(_TrainDir);
+//    car.setTop(virtualPoints[_nowPos].orient);
+//    car.setWheels(trainU * TotalArcLength / virtualPoints.size());
+//    car.Draw(doingShadows);
+
     //Train
     Train train(new GLubyte[]{ 255, 0, 100 });
     int nowPos = ((int)trainU) % virtualPoints.size(), nextPos = (nowPos + 1) % virtualPoints.size();
     float midPoint = trainU - nowPos;
     Pnt3f trainPos = virtualPoints[nowPos].pos * (1 - midPoint) + virtualPoints[nextPos].pos * midPoint;
-    //    trainPos = trainPos + Pnt3f(0, 4, 0);
     trainPos = trainPos + virtualPoints[nowPos].orient * 4;
 
     Pnt3f TrainDir = (virtualPoints[nextPos].pos + virtualPoints[nowPos].pos * -1);
-    Pnt3f Rotate = Pnt3f(TrainDir.x,
-        virtualPoints[nowPos].orient.y,
-        TrainDir.z);
     TrainDir.normalize();
-    //    Rotate.normalize();
     train.setPos(trainPos);
-    //    train.setRotate(TrainDir);
-    //    train.setRotate(Rotate);
     train.setFront(TrainDir);
     train.setTop(virtualPoints[nowPos].orient);
     train.setWheels(trainU * TotalArcLength / virtualPoints.size());
@@ -364,10 +379,34 @@ void CTrack::draw(bool doingShadows, TrainWindow* tw) {
         support.Draw(doingShadows);
     }
 
+
+
     //train.setColor(new GLubyte[]{ 255, 0, 100 });
     //DrawCube(trainPos, trainBodySize, TrainDir);
     if(!tw->trainCam->value())
         train.Draw(doingShadows);
+
+//    Cars
+    Car car = Car(new GLubyte[]{255, 255, 255});
+    float trainu = trainU;
+    for(int i = 0; i < CarsCount; i++){
+        trainu -= 18 / ArcLength;
+        while(trainu < 0){
+            trainu += virtualPoints.size();
+        }
+        int _nowPos = ((int)trainu) % virtualPoints.size();
+        int _nextPos = (_nowPos + 1) % virtualPoints.size();
+        float _midPoint = trainu - _nowPos;
+        Pnt3f _trainPos = virtualPoints[_nowPos].pos * (1 - _midPoint) + virtualPoints[_nextPos].pos * _midPoint;
+        _trainPos = _trainPos + virtualPoints[_nowPos].orient * 4;
+        Pnt3f _TrainDir = (virtualPoints[_nextPos].pos + virtualPoints[_nowPos].pos * -1);
+        _TrainDir.normalize();
+        car.setPos(_trainPos);
+        car.setFront(_TrainDir);
+        car.setTop(virtualPoints[_nowPos].orient);
+        car.setWheels(trainU * TotalArcLength / virtualPoints.size());
+        car.Draw(doingShadows);
+    }
 }
 
 //vector <ControlPoint> CTrack::ComputeVirtualPoints() {
