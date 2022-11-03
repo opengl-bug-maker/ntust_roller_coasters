@@ -74,7 +74,6 @@ Train::Train(GLubyte* color){
         Pnt3f(0, 0, -1),
         new GLubyte[]{ 200, 200, 10 }
     ));
-
 }
 
 void Train::GLDraw(){
