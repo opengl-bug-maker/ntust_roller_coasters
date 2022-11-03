@@ -272,7 +272,8 @@ void CTrack::draw(bool doingShadows, TrainWindow* tw) {
     bool arcLengthVersion = tw->arcLength->value();
 
     int checkPointsCount = tw->checkPointsCount->value();
-    float arcMinLength = 3, arcMaxLength = 4;
+    float arcMinLength = 0.1, arcMaxLength = 0.2;
+//    float arcMinLength = 3, arcMaxLength = 4;
     float trackWidth = tw->trackWidth->value();
     float trackLineWidth = tw->trackLineWidth->value();
     float trackRoadWidth = tw->trackRoadWidth->value();
@@ -460,7 +461,7 @@ vector<ControlPoint> CTrack::FixedArcPoints(const vector<ControlPoint>& vPoints,
         PointsLength[i] = PointsLength[i - 1] + (copy[i].pos + copy[i - 1].pos * -1).length();
     }
     int ArcPointCount = (PointsLength[copy.size() - 1] / minLength + PointsLength[copy.size() - 1] / maxLength) / 2;
-    float ArcLength = PointsLength[copy.size() - 1] / ArcPointCount;
+    ArcLength = PointsLength[copy.size() - 1] / ArcPointCount;
 
     int lastPos = 0;
 
@@ -576,3 +577,6 @@ void CTrack::DrawTrackRoadOneWood(const vector<ControlPoint>& trackPoints, const
 
 }
 
+float CTrack::getArcV() const{
+    return 10.0f / ArcLength;
+}
