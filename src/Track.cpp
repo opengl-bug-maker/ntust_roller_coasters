@@ -275,7 +275,7 @@ void CTrack::draw(bool doingShadows, TrainWindow* tw) {
 
     int checkPointsCount = tw->checkPointsCount->value();
     float arcMinLength = 0.1, arcMaxLength = 0.2;
-//    float arcMinLength = 3, arcMaxLength = 4;
+    //    float arcMinLength = 3, arcMaxLength = 4;
     float trackWidth = tw->trackWidth->value();
     float trackLineWidth = tw->trackLineWidth->value();
     float trackRoadWidth = tw->trackRoadWidth->value();
@@ -348,6 +348,21 @@ void CTrack::draw(bool doingShadows, TrainWindow* tw) {
     trainPos = (virtualPoints[nowPos].pos * (1 - midPoint) + virtualPoints[nextPos].pos * midPoint) + virtualPoints[nowPos].orient * 16 + TrainDir * 2;
     smoke.setPos(trainPos);
     smoke.Draw(doingShadows);
+
+    SupportStructure support = SupportStructure(
+        Pnt3f(0, 0, 0),
+        Pnt3f(1, 1, 1),
+        Pnt3f(1, 0, 0),
+        Pnt3f(0, 1, 0),
+        new GLubyte[]{ 255,255,255 }
+    );
+    // Support
+    for (int i = 0; i < points.size(); i++) {
+        Pnt3f d = points[i].pos + Pnt3f(0, -2, 0);
+        support.setPos(Pnt3f(d.x, d.y * 0.5, d.z));
+        support.setSize(Pnt3f(1, d.y, 1));
+        support.Draw(doingShadows);
+    }
 
     //train.setColor(new GLubyte[]{ 255, 0, 100 });
     //DrawCube(trainPos, trainBodySize, TrainDir);

@@ -41,6 +41,7 @@ using std::vector; // avoid having to say std::vector all of the time
 #include "Obj/TrackLine.h"
 #include "Obj/TrackRoad.h"
 #include "Obj/ObjInfoPack.h"
+#include "SupportStructure.h"
 
 class CTrack {
 	public:		
