@@ -320,47 +320,22 @@ void CTrack::draw(bool doingShadows, TrainWindow* tw) {
 
 
     if (!doingShadows)
-        //        glColor3ub(240, 60, 60);
         glColor3ubv(TrainColor);
 
-
-//
-//    trainu += 10 / ArcLength;
-//    while(trainu > virtualPoints.size()){
-//        trainu -= virtualPoints.size();
-//    }
-//    int _nowPos = ((int)trainu) % virtualPoints.size();
-//    int _nextPos = (_nowPos + 1) % virtualPoints.size();
-//    float _midPoint = trainu - _nowPos;
-//    Pnt3f _trainPos = virtualPoints[_nowPos].pos * (1 - _midPoint) + virtualPoints[_nextPos].pos * _midPoint;
-//    _trainPos = _trainPos + virtualPoints[_nowPos].orient * 4;
-//    Pnt3f _TrainDir = (virtualPoints[_nextPos].pos + virtualPoints[_nowPos].pos * -1);
-//    _TrainDir.normalize();
-//    car.setPos(_trainPos);
-//    car.setFront(_TrainDir);
-//    car.setTop(virtualPoints[_nowPos].orient);
-//    car.setWheels(trainU * TotalArcLength / virtualPoints.size());
-//    car.Draw(doingShadows);
-
     //Train
-//    Train train(new GLubyte[]{ 255, 0, 100 });
-    int nowPos = ((int)trainU) % virtualPoints.size(), nextPos = (nowPos + 1) % virtualPoints.size();
-    float midPoint = trainU - nowPos;
-    Pnt3f trainPos = virtualPoints[nowPos].pos * (1 - midPoint) + virtualPoints[nextPos].pos * midPoint;
-    trainPos = trainPos + virtualPoints[nowPos].orient * 4;
-
-    Pnt3f TrainDir = (virtualPoints[nextPos].pos + virtualPoints[nowPos].pos * -1);
-    TrainDir.normalize();
-    train.setPos(trainPos);
-    train.setFront(TrainDir);
-    train.setTop(virtualPoints[nowPos].orient);
+    ObjInfoPack TrainInfoPack = GetTrainInfoPack(trainU);
+    train.setPos(TrainInfoPack.getPos());
+    train.setFront(TrainInfoPack.getFront());
+    train.setTop(TrainInfoPack.getTop());
     train.setWheels(trainU * TotalArcLength / virtualPoints.size());
     //todo : train orient
     // 
     // Smoke 
     Smoke smoke;
-    trainPos = (virtualPoints[nowPos].pos * (1 - midPoint) + virtualPoints[nextPos].pos * midPoint) + virtualPoints[nowPos].orient * 16 + TrainDir * 2;
-    smoke.setPos(trainPos);
+    int nowPos = ((int)trainU) % virtualPoints.size(), nextPos = (nowPos + 1) % virtualPoints.size();
+    float midPoint = trainU - nowPos;
+    Pnt3f TrainDir = (virtualPoints[nextPos].pos + virtualPoints[nowPos].pos * -1);
+    smoke.setPos((virtualPoints[nowPos].pos * (1 - midPoint) + virtualPoints[nextPos].pos * midPoint) + virtualPoints[nowPos].orient * 16 + TrainDir * 2);
     smoke.Draw(doingShadows);
 
     SupportStructure support = SupportStructure(
@@ -393,16 +368,10 @@ void CTrack::draw(bool doingShadows, TrainWindow* tw) {
         while(trainu < 0){
             trainu += virtualPoints.size();
         }
-        int _nowPos = ((int)trainu) % virtualPoints.size();
-        int _nextPos = (_nowPos + 1) % virtualPoints.size();
-        float _midPoint = trainu - _nowPos;
-        Pnt3f _trainPos = virtualPoints[_nowPos].pos * (1 - _midPoint) + virtualPoints[_nextPos].pos * _midPoint;
-        _trainPos = _trainPos + virtualPoints[_nowPos].orient * 4;
-        Pnt3f _TrainDir = (virtualPoints[_nextPos].pos + virtualPoints[_nowPos].pos * -1);
-        _TrainDir.normalize();
-        car.setPos(_trainPos);
-        car.setFront(_TrainDir);
-        car.setTop(virtualPoints[_nowPos].orient);
+        ObjInfoPack carInfoPack = GetTrainInfoPack(trainu);
+        car.setPos(carInfoPack.getPos());
+        car.setFront(carInfoPack.getFront());
+        car.setTop(carInfoPack.getTop());
         car.setWheels(trainU * TotalArcLength / virtualPoints.size());
         car.Draw(doingShadows);
     }
@@ -692,4 +661,20 @@ float CTrack::getPhysicsV(float trainU) const {
     float H = maxHeight + trainPos.dot(Gravity) / Gravity.length();
     float V = sqrt(2 * Gravity.length() * H);
     return getArcV() + V / ArcLength;
+}
+
+ObjInfoPack CTrack::GetTrainInfoPack(float trainU) const {
+    int nowPos = ((int)trainU) % virtualPoints.size(), nextPos = (nowPos + 1) % virtualPoints.size();
+    float midPoint = trainU - nowPos;
+    Pnt3f trainPos = virtualPoints[nowPos].pos * (1 - midPoint) + virtualPoints[nextPos].pos * midPoint;
+    trainPos = trainPos + virtualPoints[nowPos].orient * 4;
+    Pnt3f TrainDir = (virtualPoints[nextPos].pos + virtualPoints[nowPos].pos * -1);
+    TrainDir.normalize();
+    return ObjInfoPack(
+        trainPos,
+        Pnt3f(),
+        TrainDir,
+        virtualPoints[nowPos].orient,
+        new GLubyte[]{0,0,0}
+    );
 }

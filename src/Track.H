@@ -110,5 +110,7 @@ class CTrack {
         float getPhysicsV(float trainU) const;
         TrainWindow* t;
 
+        ObjInfoPack GetTrainInfoPack(float trainU) const;
+
         Train train;
 };
