@@ -220,16 +220,19 @@ void TrainView::draw()
 	glEnable(GL_COLOR_MATERIAL);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT0);
+    glEnable(GL_AUTO_NORMAL);
+    glEnable(GL_NORMALIZE);
+//	glEnable(GL_LIGHT0);
 
 	// top view only needs one light
-	if (tw->topCam->value()) {
-		glDisable(GL_LIGHT1);
-		glDisable(GL_LIGHT2);
-	} else {
-		glEnable(GL_LIGHT1);
-		glEnable(GL_LIGHT2);
-	}
+//	if (tw->topCam->value()) {
+////		glDisable(GL_LIGHT1);
+////		glDisable(GL_LIGHT2);
+//	} else {
+//		glEnable(GL_LIGHT1);
+//		glEnable(GL_LIGHT2);
+//	}
+    glEnable(GL_LIGHT1);
 
 	//*********************************************************************
 	//
@@ -244,20 +247,95 @@ void TrainView::draw()
 	GLfloat blueLight[]			= {.1f,.1f,.3f,1.0};
 	GLfloat grayLight[]			= {.3f, .3f, .3f, 1.0};
 
-	glLightfv(GL_LIGHT0, GL_POSITION, lightPosition1);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, whiteLight);
-	glLightfv(GL_LIGHT0, GL_AMBIENT, grayLight);
+//    GLfloat lightPos0[]    = {0, 5, 0, 0};
+//    GLfloat diffuse0[]     = {.6f, .6f, .6f, 1.0};
+//    GLfloat ambient0[]     = {.2f, .2f, .2f, 1.0};
+//
+//    glLightfv(GL_LIGHT0, GL_POSITION, lightPos0);
+//    glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse0);
+//    glLightfv(GL_LIGHT0, GL_AMBIENT, ambient0);
+
+
+    GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+    GLfloat mat_shininess[] = { 50.0 };
+    GLfloat light_position[] = { 1.0, 1.0, 1.0, 0.0 };
+//
+////    glClearColor (0.0, 0.0, 0.0, 0.0);
+    glShadeModel (GL_SMOOTH);
+//
+//    glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
+//    glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
+
+
+//    glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+//    glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 2.0);
+//    glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 1.0);
+//    glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.5);
+//
+//    glEnable(GL_LIGHTING);
+//    glEnable(GL_LIGHT0);
+//    glEnable(GL_DEPTH_TEST);
+
+//    glPushMatrix();
+//    glEnable(GL_LIGHT0);
+//    glTranslatef(10, 10)
+
+    GLfloat light1_ambient[] = { 0.2, 0.2, 0.2, 1.0 };
+    GLfloat light1_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
+    GLfloat light1_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+    GLfloat light1_position[] = {0, 0, 0, 1.0};
+    Pnt3f _TrainDir = Pnt3f(0, 1, 0);
+    if(!m_pTrack->virtualPoints.empty()){
+        Pnt3f light1_pos = m_pTrack->train.getPos() + m_pTrack->train.getFront() * 10;
+        light1_position[0] = light1_pos.x;
+        light1_position[1] = light1_pos.y;
+        light1_position[2] = light1_pos.z;
+//    GLfloat light1_position[] = { 20, 5, 0, 1.0 };
+        float trainu = m_pTrack->trainU + 20 / m_pTrack->ArcLength;
+        while(trainu > m_pTrack->virtualPoints.size()){
+            trainu -= m_pTrack->virtualPoints.size();
+        }
+        int _nowPos = ((int)trainu) % m_pTrack->virtualPoints.size();
+        _TrainDir = (m_pTrack->virtualPoints[_nowPos].pos + light1_pos * -1);
+        _TrainDir.normalize();
+    }
+//    Pnt3f spot_dire = m_pTrack->train.getFront() + m_pTrack->train.getTop() * -0.5;
+    GLfloat spot_direction[] = { _TrainDir.x, _TrainDir.y, _TrainDir.z };
+//    GLfloat spot_direction[] = { 0, -1.0, 0.0 };
+
+    glLightfv(GL_LIGHT1, GL_AMBIENT, light1_ambient);
+    glLightfv(GL_LIGHT1, GL_DIFFUSE, light1_diffuse);
+    glLightfv(GL_LIGHT1, GL_SPECULAR, light1_specular);
+    glLightfv(GL_LIGHT1, GL_POSITION, light1_position);
+    glLightf(GL_LIGHT1, GL_CONSTANT_ATTENUATION, 1);
+    glLightf(GL_LIGHT1, GL_LINEAR_ATTENUATION, 0.05);
+    glLightf(GL_LIGHT1, GL_QUADRATIC_ATTENUATION, 0.01);
+
+    glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, 45.0);
+    glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, spot_direction);
+    glLightf(GL_LIGHT1, GL_SPOT_EXPONENT, 2.0);
+
+    if(tw->HeadLightButton->value())
+        glEnable(GL_LIGHT1);
+    else
+        glDisable(GL_LIGHT1);
+
+//    glPopMatrix();
+
+//	glLightfv(GL_LIGHT0, GL_POSITION, lightPosition1);
+//	glLightfv(GL_LIGHT0, GL_DIFFUSE, whiteLight);
+//	glLightfv(GL_LIGHT0, GL_AMBIENT, grayLight);
 //    GLfloat direction[] = {0, -1, 0};
 //    glLightfv(GL_LIGHT0, GL_SPECULAR, whiteLight);
 //    glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION , direction);
 //    glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 20.0f);
 //    glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, 5.0);
 
-	glLightfv(GL_LIGHT1, GL_POSITION, lightPosition2);
-	glLightfv(GL_LIGHT1, GL_DIFFUSE, yellowLight);
-
-	glLightfv(GL_LIGHT2, GL_POSITION, lightPosition3);
-	glLightfv(GL_LIGHT2, GL_DIFFUSE, blueLight);
+//	glLightfv(GL_LIGHT1, GL_POSITION, lightPosition2);
+//	glLightfv(GL_LIGHT1, GL_DIFFUSE, yellowLight);
+//
+//	glLightfv(GL_LIGHT2, GL_POSITION, lightPosition3);
+//	glLightfv(GL_LIGHT2, GL_DIFFUSE, blueLight);
 
 
 
@@ -269,7 +347,7 @@ void TrainView::draw()
     glEnable(GL_LIGHTING);
 	setupFloor();
 //	glDisable(GL_LIGHTING);
-	drawFloor(200,10);
+	drawFloor(200,40);
 
 
 	//*********************************************************************
@@ -279,8 +357,6 @@ void TrainView::draw()
 	glEnable(GL_LIGHTING);
 	setupObjects();
 
-    glEnable(GL_AUTO_NORMAL);
-    glEnable(GL_NORMALIZE);
 
 	drawStuff();
 

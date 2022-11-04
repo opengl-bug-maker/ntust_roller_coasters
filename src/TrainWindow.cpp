@@ -186,7 +186,13 @@ TrainWindow(const int x, const int y)
         tension->callback((Fl_Callback*)damageCB,this);
 
         pty+=25;
-		// TODO: add widgets for all of your fancier features here
+
+        HeadLightButton = new Fl_Button(605,pty,80,20,"HeadLight");
+        togglify(HeadLightButton, 1);
+
+        pty+=25;
+
+        // TODO: add widgets for all of your fancier features here
 #ifdef EXAMPLE_SOLUTION
 		makeExampleWidgets(this,pty);
 #endif

@@ -100,6 +100,7 @@ class TrainWindow : public Fl_Double_Window {
         Fl_Value_Slider*	trackRoadWidth;
         Fl_Value_Slider*	tension;
 
+        Fl_Button*			HeadLightButton;
 
 #ifdef EXAMPLE_SOLUTION
 	ExampleWidgets ew;
