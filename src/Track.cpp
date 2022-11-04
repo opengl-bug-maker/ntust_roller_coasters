@@ -378,8 +378,8 @@ void CTrack::draw(bool doingShadows, TrainWindow* tw) {
 
     //tunnel
     int step = t->checkPointsCount->value() / 5;
-    if(t->arcLength->value()) step = (int)(10.0f / ArcLength);
-    for (int i = 0; i < virtualPoints.size() / 8; i += step) {
+    if(t->arcLength->value()) step = (int)(1.0f / ArcLength);
+    for (int i = 0; i < virtualPoints.size() / 5; i += step) {
         ControlPoint fir = virtualPoints[i];
         ControlPoint sec = virtualPoints[(i + 1) % virtualPoints.size()];
 
