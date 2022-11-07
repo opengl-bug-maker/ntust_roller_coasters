@@ -383,7 +383,7 @@ void CTrack::draw(bool doingShadows, TrainWindow* tw) {
         ControlPoint fir = virtualPoints[i];
         ControlPoint sec = virtualPoints[(i + 1) % virtualPoints.size()];
 
-        Tunnel tunnel = Tunnel(fir.pos, trackWidth * 2, 15);
+        Tunnel tunnel = Tunnel(fir.pos, trackWidth * 2, 20);
         tunnel.setPos(fir.pos);
         tunnel.setFront((sec.pos + fir.pos * -1));
         tunnel.setTop(fir.orient);

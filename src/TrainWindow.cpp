@@ -72,7 +72,7 @@ TrainWindow(const int x, const int y)
   
 		pty+=25;
 		speed = new Fl_Value_Slider(655,pty,140,20,"speed");
-		speed->range(0,1000);
+		speed->range(0,10);
 		speed->value(2);
 		speed->align(FL_ALIGN_LEFT);
 		speed->type(FL_HORIZONTAL);
