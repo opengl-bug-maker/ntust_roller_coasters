@@ -8,9 +8,26 @@ float get_random_float() {
     return (float)r / 1000-1;
 }
 Smoke::Smoke() :Obj() {
+    init();
+}
+
+
+void Smoke::GLDraw() {
+}
+
+Smoke::Smoke(float startTick) : Obj(), startTick(startTick) {
+    init();
+}
+
+float Smoke::getStartTick() const {
+    return startTick;
+}
+
+void Smoke::init() {
+    Obj::init();
     srand(time(NULL));
     int count = 50;
-    
+
     for (int i = 0; i < count; i++) {
         GLubyte color = (GLubyte)(90 + get_random_float() * 10);
         Children.push_back(new Cuboid(
@@ -21,8 +38,4 @@ Smoke::Smoke() :Obj() {
             new GLubyte[]{ color , color , color }
         ));
     }
-}
-
-
-void Smoke::GLDraw() {
 }

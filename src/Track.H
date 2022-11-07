@@ -44,6 +44,7 @@ using std::vector; // avoid having to say std::vector all of the time
 #include "SupportStructure.h"
 #include "Tunnel.h"
 #include "Train.h"
+#include "Smoke.h"
 
 class CTrack {
 	public:		
@@ -113,4 +114,6 @@ class CTrack {
         ObjInfoPack GetTrainInfoPack(float trainU) const;
 
         Train train;
+
+        std::vector<Smoke> smokes;
 };

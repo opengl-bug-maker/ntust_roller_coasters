@@ -27,7 +27,6 @@
 #include "Track.H"
 #include "Utilities/3dUtils.h"
 #include "TrainWindow.H"
-#include "Smoke.h"
 
 //****************************************************************************
 //
@@ -331,12 +330,40 @@ void CTrack::draw(bool doingShadows, TrainWindow* tw) {
     //todo : train orient
     // 
     // Smoke 
-    Smoke smoke;
-    int nowPos = ((int)trainU) % virtualPoints.size(), nextPos = (nowPos + 1) % virtualPoints.size();
-    float midPoint = trainU - nowPos;
-    Pnt3f TrainDir = (virtualPoints[nextPos].pos + virtualPoints[nowPos].pos * -1);
-    smoke.setPos((virtualPoints[nowPos].pos * (1 - midPoint) + virtualPoints[nextPos].pos * midPoint) + virtualPoints[nowPos].orient * 16 + TrainDir * 2);
-    smoke.Draw(doingShadows);
+//    Smoke smoke;
+//    int nowPos = ((int)trainU) % virtualPoints.size(), nextPos = (nowPos + 1) % virtualPoints.size();
+//    float midPoint = trainU - nowPos;
+//    Pnt3f TrainDir = (virtualPoints[nextPos].pos + virtualPoints[nowPos].pos * -1);
+//    smoke.setPos((virtualPoints[nowPos].pos * (1 - midPoint) + virtualPoints[nextPos].pos * midPoint) + virtualPoints[nowPos].orient * 16 + TrainDir * 2);
+//    smoke.Draw(doingShadows);
+
+
+    float smokeDis = trainU;
+    if(smokes.empty()){
+        smokeDis += 9999;
+    }else{
+        smokeDis -= smokes.back().getStartTick();
+    }
+    if(smokeDis < 0) smokeDis += virtualPoints.size();
+    if(smokes.empty() || smokeDis > (10.0 / ArcLength)){
+//        int i = 0;
+        if(!doingShadows)
+        smokes.push_back(Smoke(trainU));
+        int _nowPos = ((int)trainU) % virtualPoints.size(), _nextPos = (_nowPos + 1) % virtualPoints.size();
+        float _midPoint = trainU - _nowPos;
+        Pnt3f TrainDir = (virtualPoints[_nextPos].pos + virtualPoints[_nowPos].pos * -1);
+        smokes[smokes.size() - 1].setPos((virtualPoints[_nowPos].pos * (1 - _midPoint) + virtualPoints[_nextPos].pos * _midPoint) + virtualPoints[_nowPos].orient * 16 + TrainDir * 2);
+    }
+    for(auto smoke : smokes){
+        smoke.setSize(smoke.getSize() * 0.9);
+        smoke.Draw(doingShadows);
+    }
+    for(int i = smokes.size() - 1; i >= 0; i--){
+        smokes[i].setSize(smokes[i].getSize() * 0.95);
+        smokes[i].setPos(smokes[i].getPos() + Pnt3f(0, 0.3, 0));
+        smokes[i].Draw(doingShadows);
+        if(smokes[i].getSize().length() < 0.001) smokes.erase(smokes.begin() + i);
+    }
 
     SupportStructure support = SupportStructure(
         Pnt3f(0, 0, 0),
