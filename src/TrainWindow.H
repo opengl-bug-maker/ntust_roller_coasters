@@ -101,6 +101,7 @@ class TrainWindow : public Fl_Double_Window {
         Fl_Value_Slider*	tension;
 
         Fl_Button*			HeadLightButton;
+        Fl_Button*			SunButtton;
 
 #ifdef EXAMPLE_SOLUTION
 	ExampleWidgets ew;

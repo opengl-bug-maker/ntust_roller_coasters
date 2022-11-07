@@ -189,6 +189,8 @@ TrainWindow(const int x, const int y)
 
         HeadLightButton = new Fl_Button(605,pty,80,20,"HeadLight");
         togglify(HeadLightButton, 1);
+        SunButtton = new Fl_Button(695,pty,40,20,"Sun");
+        togglify(SunButtton, 1);
 
         pty+=25;
 

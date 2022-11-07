@@ -233,6 +233,7 @@ void TrainView::draw()
 //		glEnable(GL_LIGHT2);
 //	}
     glEnable(GL_LIGHT1);
+    glEnable(GL_LIGHT2);
 
 	//*********************************************************************
 	//
@@ -247,13 +248,7 @@ void TrainView::draw()
 	GLfloat blueLight[]			= {.1f,.1f,.3f,1.0};
 	GLfloat grayLight[]			= {.3f, .3f, .3f, 1.0};
 
-//    GLfloat lightPos0[]    = {0, 5, 0, 0};
-//    GLfloat diffuse0[]     = {.6f, .6f, .6f, 1.0};
-//    GLfloat ambient0[]     = {.2f, .2f, .2f, 1.0};
 //
-//    glLightfv(GL_LIGHT0, GL_POSITION, lightPos0);
-//    glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse0);
-//    glLightfv(GL_LIGHT0, GL_AMBIENT, ambient0);
 
 
     GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
@@ -303,6 +298,24 @@ void TrainView::draw()
     GLfloat spot_direction[] = { _TrainDir.x, _TrainDir.y, _TrainDir.z };
 //    GLfloat spot_direction[] = { 0, -1.0, 0.0 };
 
+    GLfloat lightPos0[]    = {3, 5, 3, 0};
+    GLfloat diffuse0[]     = {.6f, .6f, .6f, 1.0};
+    GLfloat ambient0[]     = {.3f, .3f, .3f, 1.0};
+
+    glLightfv(GL_LIGHT0, GL_POSITION, lightPos0);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse0);
+    glLightfv(GL_LIGHT0, GL_AMBIENT, ambient0);
+//    glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 1);
+//    glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0);
+//    glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0);
+//
+//    glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 180.0);
+//    GLfloat spot_dire0[] = { -3, -5, -3 };
+//    glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, spot_dire0);
+//    glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, 2.0);
+
+
+
     glLightfv(GL_LIGHT1, GL_AMBIENT, light1_ambient);
     glLightfv(GL_LIGHT1, GL_DIFFUSE, light1_diffuse);
     glLightfv(GL_LIGHT1, GL_SPECULAR, light1_specular);
@@ -320,6 +333,12 @@ void TrainView::draw()
     else
         glDisable(GL_LIGHT1);
 
+    if(tw->SunButtton->value())
+        glEnable(GL_LIGHT0);
+    else
+        glDisable(GL_LIGHT0);
+
+
 //    glPopMatrix();
 
 //	glLightfv(GL_LIGHT0, GL_POSITION, lightPosition1);
@@ -334,8 +353,8 @@ void TrainView::draw()
 //	glLightfv(GL_LIGHT1, GL_POSITION, lightPosition2);
 //	glLightfv(GL_LIGHT1, GL_DIFFUSE, yellowLight);
 //
-//	glLightfv(GL_LIGHT2, GL_POSITION, lightPosition3);
-//	glLightfv(GL_LIGHT2, GL_DIFFUSE, blueLight);
+	glLightfv(GL_LIGHT2, GL_POSITION, lightPosition3);
+	glLightfv(GL_LIGHT2, GL_DIFFUSE, blueLight);
 
 
 
