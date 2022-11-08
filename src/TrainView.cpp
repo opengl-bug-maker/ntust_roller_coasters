@@ -380,9 +380,9 @@ void TrainView::draw()
 	// once for real, and then once for shadows
 	//*********************************************************************
 	glEnable(GL_LIGHTING);
+
+
 	setupObjects();
-
-
 	drawStuff();
 
 	// this time drawing is for shadows (except for top view)
@@ -391,6 +391,8 @@ void TrainView::draw()
 		drawStuff(true);
 		unsetupShadows();
 	}
+//    setupObjects();
+//    drawStuff();
 }
 
 //************************************************************************

@@ -193,18 +193,18 @@ void setupShadows(void)
 //===============================================================================
 {
 	glDisable(GL_LIGHTING);
-	glDisable(GL_DEPTH_TEST);
+//	glDisable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	glEnable(GL_STENCIL_TEST);
-	glStencilFunc(GL_EQUAL,0x1,0x1);
-	glStencilOp(GL_KEEP,GL_ZERO,GL_ZERO);
-	glStencilMask(0x1);		// only deal with the 1st bit
+//	glEnable(GL_STENCIL_TEST);
+//	glStencilFunc(GL_EQUAL,0x1,0x1);
+//	glStencilOp(GL_KEEP,GL_ZERO,GL_ZERO);
+//	glStencilMask(0x1);		// only deal with the 1st bit
 
 	glPushMatrix();
 	// a matrix that squishes things onto the floor
-	float sm[16] = {1,0,0,0, 0,0,0,0, 0,0,1,0, 0,0,0,1};
+	float sm[16] = {1,0,0,0, 0,0,0,0, 0,0,1,0, 0,1.5f,0,1};
 	glMultMatrixf(sm);
 	// draw in transparent black (to dim the floor)
 	glColor4f(0,0,0,.5);

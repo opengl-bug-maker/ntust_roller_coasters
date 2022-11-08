@@ -119,5 +119,7 @@ class CTrack {
 
         Train train;
 
+//        std::vector<Car> cars;
+
         std::vector<Smoke> smokes;
 };

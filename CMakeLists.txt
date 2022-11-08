@@ -48,12 +48,14 @@ add_executable(RollerCoasters
 	${SRC_DIR}Tunnel.cpp
 	${SRC_DIR}SupportStructure.h
 	${SRC_DIR}SupportStructure.cpp
+	${SRC_DIR}People.h
+	${SRC_DIR}People.cpp
 	${SRC_DIR}Obj/TrackRoad.h
 	${SRC_DIR}Obj/TrackRoad.cpp
 	${SRC_DIR}Obj/Floor.h
 	${SRC_DIR}Obj/Floor.cpp
-    ${SRC_DIR}Obj/CuboidAnchorBottom.h
-    ${SRC_DIR}Obj/CuboidAnchorBottom.cpp
+	${SRC_DIR}Obj/PeopleArm.h
+	${SRC_DIR}Obj/PeopleArm.cpp
     ${INCLUDE_DIR}glad4.6/src/glad.c )
 
 add_library(Utilities 

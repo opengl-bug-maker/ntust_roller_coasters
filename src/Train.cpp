@@ -2,7 +2,9 @@
 #include "Obj/Cuboid.h"
 #include "Obj/Cylinder.h"
 #include "Obj/Sphere.h"
+#include "People.h"
 #include "wheels.h"
+
 void Train::init() {
     Obj::init();
     Children.push_back(new Cuboid( //車身
@@ -200,6 +202,12 @@ Car::Car(GLubyte* color){
         Pnt3f(0, 0, -1),
         this->wheels_color
     ));
+
+    Children.push_back(new People(
+        Pnt3f(0, 0, 0),
+        Pnt3f(1, 0, 0),
+        Pnt3f(0, 1, 0)
+    ));
 }
 
 void Car::setWheels(float length) {
@@ -208,3 +216,14 @@ void Car::setWheels(float length) {
     ((Wheel*)Children[7])->setWheels(length);
     ((Wheel*)Children[8])->setWheels(length);
 }
+
+void Car::setHand(float degree) {
+    if(degree < 0) degree = 0;
+    if(degree > 90) degree = 90;
+    ((People*)Children[9])->turn_hand(degree);
+}
+
+void Car::init() {
+    Obj::init();
+}
+

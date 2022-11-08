@@ -22,6 +22,10 @@ public:
 	Car();
 	Car(GLubyte* color);
     void setWheels(float length);
+    void setHand(float degree);
+
+    void init() override;
+
 private:
 	void GLDraw() override {};
     GLubyte wheels_color[3] = {200,200,10};

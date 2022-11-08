@@ -56,7 +56,7 @@ TrainWindow(const int x, const int y)
 		this->resizable(trainView);
 
 		// to make resizing work better, put all the widgets in a group
-		widgets = new Fl_Group(600,5,190,590);
+		widgets = new Fl_Group(600,5,290,590);
 		widgets->begin();
 
 		runButton = new Fl_Button(605,pty,60,20,"Run");
@@ -69,6 +69,9 @@ TrainWindow(const int x, const int y)
 
         arcLength = new Fl_Button(730,pty,65,20,"ArcLength");
         togglify(arcLength,1);
+
+        SubdivisionButton = new Fl_Button(800,pty,80,20,"Subdivision");
+        togglify(SubdivisionButton,1);
 
 
         pty+=25;

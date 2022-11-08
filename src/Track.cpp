@@ -46,6 +46,8 @@ CTrack() : trainU(0)
 
     DrawTrackRoadFunc[0] = &CTrack::DrawTrackRoadOneWood;
     DrawTrackRoadFunc[1] = &CTrack::DrawTrackRoadRoadWood;
+
+//    cars = vector<Car>(3, Car());
 }
 
 //****************************************************************************
@@ -306,10 +308,16 @@ void CTrack::draw(bool doingShadows, TrainWindow* tw) {
     //        virtualPoints[i].draw();
     //    }
 
+    if(tw->SubdivisionButton->value()) {
+        vector<ControlPoint> sub = subdivision(virtualPoints);
+        (this->*DrawTrackLineFunc[DrawTrackLineIndex])(sub, doingShadows, trackLine, trackWidth);
+        (this->*DrawTrackRoadFunc[DrawTrackRoadIndex])(virtualPoints, doingShadows, trackRoad, trackWidth);
+    }else{
+        (this->*DrawTrackLineFunc[DrawTrackLineIndex])(virtualPoints, doingShadows, trackLine, trackWidth);
+        (this->*DrawTrackRoadFunc[DrawTrackRoadIndex])(virtualPoints, doingShadows, trackRoad, trackWidth);
+    }
     //    if(!doingShadows)
-    (this->*DrawTrackLineFunc[DrawTrackLineIndex])(virtualPoints, doingShadows, trackLine, trackWidth);
     //    if(!doingShadows)
-    (this->*DrawTrackRoadFunc[DrawTrackRoadIndex])(virtualPoints, doingShadows, trackRoad, trackWidth);
 
     //    DrawTrack(virtualPoints, doingShadows, trackWidth, trackLineWidth, trackRoadWidth, TrackLineColor, TrackRoadColor);
 
@@ -409,6 +417,7 @@ void CTrack::draw(bool doingShadows, TrainWindow* tw) {
             car.setFront(carInfoPack.getFront());
             car.setTop(carInfoPack.getTop());
             car.setWheels(trainU * TotalArcLength / virtualPoints.size());
+            car.setHand((getPhysicsV(trainu) - 120) / 280.0f * 120.0f);
             car.Draw(doingShadows);
         }
     }
@@ -762,7 +771,7 @@ vector<ControlPoint> CTrack::subdivision(const vector<ControlPoint> &vPoints) {
         Pnt3f f = fir.pos + ps.back().pos * -1;
         Pnt3f ff = sec.pos + fir.pos * -1;
         float cs = ff.dot(f) / f.length() / ff.length();
-        if(abs(cs) > 0.9807852804){ // < 11.25
+        if(abs(cs) > 0.9986295348){ // < 3
             continue;
         }else{
             ps.push_back(fir);
