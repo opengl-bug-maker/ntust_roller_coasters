@@ -50,7 +50,9 @@ add_executable(RollerCoasters
 	${SRC_DIR}SupportStructure.cpp
 	${SRC_DIR}Obj/TrackRoad.h
 	${SRC_DIR}Obj/TrackRoad.cpp
-    ${INCLUDE_DIR}glad4.6/src/glad.c src/Obj/Floor.cpp src/Obj/Floor.h)
+	${SRC_DIR}Obj/Floor.h
+	${SRC_DIR}Obj/Floor.cpp
+    ${INCLUDE_DIR}glad4.6/src/glad.c)
 
 add_library(Utilities 
     ${SRC_DIR}Utilities/3DUtils.h
