@@ -80,6 +80,8 @@ class CTrack {
         /// need Arc Points
         vector<ControlPoint> physicsPoints(const vector<ControlPoint>& vPoints);
 
+        vector<ControlPoint> subdivision(const vector<ControlPoint>& vPoints);
+
         //
 //        void DrawTrack(const vector<ControlPoint>& trackPoints, bool doingShadows, float trackWidth, float trackLineWidth, float trackRoadWidth, GLubyte* trackLineColor, GLubyte* trackRoadColor);
 

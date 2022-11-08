@@ -749,3 +749,21 @@ CTrack::DrawTrackRoadRoadWood(const vector<ControlPoint> &trackPoints, const boo
     }
     glEnd();
 }
+
+vector<ControlPoint> CTrack::subdivision(const vector<ControlPoint> &vPoints) {
+    vector<ControlPoint> ps;
+    ps.push_back(vPoints.front());
+    for(int i = 1; i < vPoints.size(); i++){
+        ControlPoint fir = vPoints[i];
+        ControlPoint sec = vPoints[(i + 1) % vPoints.size()];
+        Pnt3f f = fir.pos + ps.back().pos * -1;
+        Pnt3f ff = sec.pos + fir.pos * -1;
+        float cs = ff.dot(f) / f.length() / ff.length();
+        if(abs(cs) > 0.9807852804){ // < 11.25
+            continue;
+        }else{
+            ps.push_back(fir);
+        }
+    }
+    return ps;
+}
