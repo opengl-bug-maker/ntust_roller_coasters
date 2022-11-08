@@ -318,8 +318,8 @@ void CTrack::draw(bool doingShadows, TrainWindow* tw) {
 
 
 
-    if (!doingShadows)
-        glColor3ubv(TrainColor);
+//    if (!doingShadows)
+//        glColor3ubv(TrainColor);
 
     //Train
     ObjInfoPack TrainInfoPack = GetTrainInfoPack(trainU);
@@ -387,20 +387,22 @@ void CTrack::draw(bool doingShadows, TrainWindow* tw) {
     if(!tw->trainCam->value())
         train.Draw(doingShadows);
 
+    if(tw->arcLength->value()){
 //    Cars
-    Car car = Car(new GLubyte[]{ 233, 29, 45 });
-    float trainu = trainU;
-    for(int i = 0; i < CarsCount; i++){
-        trainu -= 18 / ArcLength;
-        while(trainu < 0){
-            trainu += virtualPoints.size();
+        Car car = Car(new GLubyte[]{ 233, 29, 45 });
+        float trainu = trainU;
+        for(int i = 0; i < CarsCount; i++){
+            trainu -= 18 / ArcLength;
+            while(trainu < 0){
+                trainu += virtualPoints.size();
+            }
+            ObjInfoPack carInfoPack = GetTrainInfoPack(trainu);
+            car.setPos(carInfoPack.getPos());
+            car.setFront(carInfoPack.getFront());
+            car.setTop(carInfoPack.getTop());
+            car.setWheels(trainU * TotalArcLength / virtualPoints.size());
+            car.Draw(doingShadows);
         }
-        ObjInfoPack carInfoPack = GetTrainInfoPack(trainu);
-        car.setPos(carInfoPack.getPos());
-        car.setFront(carInfoPack.getFront());
-        car.setTop(carInfoPack.getTop());
-        car.setWheels(trainU * TotalArcLength / virtualPoints.size());
-        car.Draw(doingShadows);
     }
 
     //tunnel
