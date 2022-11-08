@@ -70,7 +70,11 @@ TrainWindow(const int x, const int y)
         arcLength = new Fl_Button(730,pty,65,20,"ArcLength");
         togglify(arcLength,1);
 
+
         pty+=25;
+        MountainButton = new Fl_Button(605,pty,65,20,"Mountain");
+        togglify(MountainButton,1);
+
         PhysicButton = new Fl_Button(730,pty,65,20,"Physic");
         togglify(PhysicButton,1);
 

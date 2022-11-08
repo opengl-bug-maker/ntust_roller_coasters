@@ -366,8 +366,13 @@ void TrainView::draw()
     glEnable(GL_LIGHTING);
 	setupFloor();
 //	glDisable(GL_LIGHTING);
-//	drawFloor(200,40);
 
+    if(tw->MountainButton->value()){
+        Floor floor;
+        floor.Draw(false);
+    }else{
+	    drawFloor(200,40);
+    }
 
 
 	//*********************************************************************
@@ -377,8 +382,6 @@ void TrainView::draw()
 	glEnable(GL_LIGHTING);
 	setupObjects();
 
-    Floor floor;
-    floor.Draw(false);
 
 	drawStuff();
 

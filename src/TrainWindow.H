@@ -107,6 +107,9 @@ class TrainWindow : public Fl_Double_Window {
         Fl_Browser*			TrackLineBrowser;
         Fl_Browser*			TrackRoadBrowser;
 
+        Fl_Button*			MountainButton;
+
+
 #ifdef EXAMPLE_SOLUTION
 	ExampleWidgets ew;
 #endif
