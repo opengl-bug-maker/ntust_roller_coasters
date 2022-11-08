@@ -26,4 +26,3 @@ private:
 	void GLDraw() override {};
     GLubyte wheels_color[3] = {200,200,10};
 };
-};
