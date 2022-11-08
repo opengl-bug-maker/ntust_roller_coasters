@@ -13,13 +13,14 @@ Wheel::Wheel(const Pnt3f& pos, const Pnt3f& size, const Pnt3f& front, const Pnt3
     front,
     top,
     color) {
+    static GLubyte WheelmiddleColor[] = {130,20,130};
     Children.push_back(new Cuboid(
         Pnt3f(0, 0, 0),
         Pnt3f(0.75, 3, 0.25),
         //Pnt3f(0, 0, 90),
         Pnt3f(1, 0, 1),
         Pnt3f(0, 1, 0),
-        new GLubyte[]{ 130, 20, 130 }
+        WheelmiddleColor
     ));
     Children.push_back(new Cylinder(
         Pnt3f(0, 0, 0),

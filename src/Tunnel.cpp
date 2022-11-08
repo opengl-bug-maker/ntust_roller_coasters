@@ -8,13 +8,16 @@ void Tunnel::GLDraw() {
 }
 Tunnel::Tunnel(const Pnt3f& pos, float w, float h){
     const int tunnel_width = 2;
+
+    static GLubyte TunnelColor[] = {145,132,13};
+
     Children.push_back(new Cuboid( //top
         Pnt3f(0, h-0.5, 0),
         Pnt3f(tunnel_width, 1, w + 2),
         //Pnt3f(0, 0, 90),
         Pnt3f(1, 0, 0),
         Pnt3f(0, 1, 0),
-        new GLubyte[]{ 145,132, 13}
+        TunnelColor
     ));
     Children.push_back(new Cuboid( //left
         Pnt3f(0, (h-1)/2, (w+1)/2),
@@ -22,7 +25,7 @@ Tunnel::Tunnel(const Pnt3f& pos, float w, float h){
         //Pnt3f(0, 0, 90),
         Pnt3f(1, 0, 0),
         Pnt3f(0, 1, 0),
-        new GLubyte[]{ 145,132, 13 }
+        TunnelColor
     ));
     Children.push_back(new Cuboid( //right
         Pnt3f(0, (h - 1) / 2, -((w + 1) / 2)),
@@ -30,6 +33,6 @@ Tunnel::Tunnel(const Pnt3f& pos, float w, float h){
         //Pnt3f(0, 0, 90),
         Pnt3f(1, 0, 0),
         Pnt3f(0, 1, 0),
-        new GLubyte[]{ 145,132, 13 }
+        TunnelColor
     ));
 }

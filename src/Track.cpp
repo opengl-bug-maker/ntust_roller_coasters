@@ -370,12 +370,14 @@ void CTrack::draw(bool doingShadows, TrainWindow* tw) {
         if(smokes[i].getSize().length() < 0.001) smokes.erase(smokes.begin() + i);
     }
 
+    static GLubyte SupportStructureColor[3] = {255,255,255};
+
     SupportStructure support = SupportStructure(
         Pnt3f(0, 0, 0),
         Pnt3f(1, 1, 1),
         Pnt3f(1, 0, 0),
         Pnt3f(0, 1, 0),
-        new GLubyte[]{ 255,255,255 }
+        SupportStructureColor
     );
     // Support
     for (int i = 0; i < points.size(); i++) {
@@ -394,7 +396,8 @@ void CTrack::draw(bool doingShadows, TrainWindow* tw) {
 
     if(tw->arcLength->value()){
 //    Cars
-        Car car = Car(new GLubyte[]{ 233, 29, 45 });
+        static GLubyte CarColor[3] = { 233, 29, 45 };
+        Car car = Car(CarColor);
         float trainu = trainU;
         for(int i = 0; i < CarsCount; i++){
             trainu -= 18 / ArcLength;
@@ -665,7 +668,7 @@ ObjInfoPack CTrack::TrackTwoLine(const ControlPoint& fir, const ControlPoint& se
         (out1 + out0 * -1),
         mid0.orient,
         //        Pnt3f(mid0.orient + mid1.orient) * 0.5,
-        new GLubyte[]{ 0, 0, 0 }
+        nullptr
     );
 }
 
@@ -709,7 +712,7 @@ ObjInfoPack CTrack::GetTrainInfoPack(float trainU) const {
         Pnt3f(),
         TrainDir,
         virtualPoints[nowPos].orient,
-        new GLubyte[]{0,0,0}
+        nullptr
     );
 }
 

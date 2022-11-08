@@ -30,12 +30,13 @@ void Smoke::init() {
 
     for (int i = 0; i < count; i++) {
         GLubyte color = (GLubyte)(90 + get_random_float() * 10);
+        GLubyte colors[] = { color , color , color };
         Children.push_back(new Cuboid(
             Pnt3f(get_random_float() * 4, get_random_float() + 2, get_random_float() * 4),
             Pnt3f(0.6+0.1* get_random_float(), 0.7+0.1* get_random_float(), 0.6 + 0.1 * get_random_float()),
             Pnt3f(1, 0, 0),
             Pnt3f(0, 1, 0),
-            new GLubyte[]{ color , color , color }
+            colors
         ));
     }
 }
