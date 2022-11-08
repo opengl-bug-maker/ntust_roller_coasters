@@ -8,67 +8,60 @@ void Train::init() {
     Children.push_back(new Cuboid( //車身
         Pnt3f( 0, 1, 0), //pos
         Pnt3f( 17, 6, 6), //size
-//        Pnt3f(0, 0, 0), //rotation
         Pnt3f(1, 0, 0),
         Pnt3f(0, 1, 0),
-        new GLubyte[]{ 233, 29, 45 }
+        this->body_color
     ));
     Children.push_back(new Cuboid( //駕駛艙
         Pnt3f( -4.5,7, 0), //pos
         Pnt3f(8, 6,  6), //size
-//        Pnt3f(0, 0, 0), //rotation
         Pnt3f(1, 0, 0),
         Pnt3f(0, 1, 0),
-        new GLubyte[] { 117, 206, 219 }
+        this->cockpit_color
     ));
     Children.push_back(new Cuboid( //駕駛艙屋頂
         Pnt3f(-4.5 ,10.5, 0), //pos
         Pnt3f(10, 1, 7), //size
-        //Pnt3f(0, 0, 0), //rotation
         Pnt3f(1, 0, 0),
         Pnt3f(0, 1, 0),
-        new GLubyte[]{ 233, 29, 45 }
+        this->ceil_color
     ));
     Children.push_back(new Cylinder( //烟囪
         Pnt3f(5, 5, 0),
         Pnt3f(2, 4, 2),
-        //Pnt3f(90, 0, 0),
         Pnt3f(1, 0, 0),
         Pnt3f(0, 1, 0),
-        new GLubyte[]{200, 200, 10}
+        this->chimney_color
     ));
-//
+
+
     Children.push_back(new Wheel( //輪子1
         Pnt3f(5, -1.5, 3.25),
         Pnt3f(2, 0.5,  2),
-        //Pnt3f(0, 0, 90),
         Pnt3f(1, 0, 0),
         Pnt3f(0, 0, 1),
-        new GLubyte[]{ 200, 200, 10 }
+        wheels_color
     ));
     Children.push_back(new Wheel( //輪子2
         Pnt3f(-5, -0.5, 3.25),
         Pnt3f(3, 0.5, 3),
-        //Pnt3f(0, 0, 90),
         Pnt3f(1, 0, 0),
         Pnt3f(0, 0, 1),
-        new GLubyte[]{ 200, 200, 10 }
+        wheels_color
     ));
     Children.push_back(new Wheel( //輪子3
         Pnt3f(5, -1.5, -3.25),
         Pnt3f(2, 0.5, 2),
-        //Pnt3f(0, 0, 90),
         Pnt3f(1, 0, 0),
         Pnt3f(0, 0, -1),
-        new GLubyte[]{ 200, 200, 10 }
+        wheels_color
     ));
     Children.push_back(new Wheel ( //輪子4
         Pnt3f(-5, -0.5, -3.25),
         Pnt3f(3, 0.5, 3),
-        //Pnt3f(0, 0, 90),
         Pnt3f(1, 0, 0),
         Pnt3f(0, 0, -1),
-        new GLubyte[]{ 200, 200, 10 }
+        wheels_color
     ));
 }
 
@@ -141,7 +134,6 @@ Car::Car(GLubyte* color){
         Pnt3f( 15, 7, 1), //size
         Pnt3f(1, 0, 0),
         Pnt3f(0, 1, 0),
-//        new GLubyte[]{ 0, 0, 0 }
         color
     ));
 
@@ -150,7 +142,6 @@ Car::Car(GLubyte* color){
         Pnt3f( 15, 7, 1), //size
         Pnt3f(1, 0, 0),
         Pnt3f(0, 1, 0),
-//        new GLubyte[]{ 0, 0, 0 }
         color
     ));
 
@@ -159,7 +150,6 @@ Car::Car(GLubyte* color){
         Pnt3f( 1, 7, 6), //size
         Pnt3f(1, 0, 0),
         Pnt3f(0, 1, 0),
-//        new GLubyte[]{ 0, 0, 0 }
         color
     ));
 
@@ -168,7 +158,6 @@ Car::Car(GLubyte* color){
         Pnt3f( 1, 7, 6), //size
         Pnt3f(1, 0, 0),
         Pnt3f(0, 1, 0),
-//        new GLubyte[]{ 0, 0, 0 }
         color
     ));
 
@@ -177,7 +166,6 @@ Car::Car(GLubyte* color){
         Pnt3f( 17, 1, 6), //size
         Pnt3f(1, 0, 0),
         Pnt3f(0, 1, 0),
-//        new GLubyte[]{ 0, 0, 0 }
         color
     ));
 
@@ -186,7 +174,7 @@ Car::Car(GLubyte* color){
         Pnt3f(2, 0.5,  2),
         Pnt3f(1, 0, 0),
         Pnt3f(0, 0, 1),
-        new GLubyte[]{ 200, 200, 10 }
+        this->wheels_color
     ));
 
     Children.push_back(new Wheel( // Right Front
@@ -194,7 +182,7 @@ Car::Car(GLubyte* color){
         Pnt3f(2, 0.5, 2),
         Pnt3f(1, 0, 0),
         Pnt3f(0, 0, -1),
-        new GLubyte[]{ 200, 200, 10 }
+        this->wheels_color
     ));
 
     Children.push_back(new Wheel( // Left Back
@@ -202,7 +190,7 @@ Car::Car(GLubyte* color){
         Pnt3f(2, 0.5,  2),
         Pnt3f(1, 0, 0),
         Pnt3f(0, 0, 1),
-        new GLubyte[]{ 200, 200, 10 }
+        this->wheels_color
     ));
 
     Children.push_back(new Wheel ( // Right Back
@@ -210,7 +198,7 @@ Car::Car(GLubyte* color){
         Pnt3f(2, 0.5,  2),
         Pnt3f(1, 0, 0),
         Pnt3f(0, 0, -1),
-        new GLubyte[]{ 200, 200, 10 }
+        this->wheels_color
     ));
 }
 
