@@ -716,7 +716,11 @@ ObjInfoPack CTrack::GetTrainInfoPack(float trainU) const {
 void CTrack::DrawTrackLineOneLine(const vector<ControlPoint> &trackPoints, const bool &doingShadows, TrackLine &trackLine,
                              const float &trackWidth) {
     glBegin(GL_LINE_LOOP);
-    glColor3ubv(trackLine.getColor());
+    if(doingShadows){
+        glColor4f(0, 0, 0, 0.5f);
+    }else{
+        glColor3ubv(trackLine.getColor());
+    }
     for(auto point : trackPoints){
         glVertex3f(point.pos.x, point.pos.y, point.pos.z);
     }
@@ -728,7 +732,11 @@ void
 CTrack::DrawTrackRoadRoadWood(const vector<ControlPoint> &trackPoints, const bool &doingShadows, TrackRoad &trackRoad,
                               const float &trackWidth) {
     glBegin(GL_QUAD_STRIP);
-    glColor3ubv(trackRoad.getColor());
+    if(doingShadows){
+        glColor4f(0, 0, 0, 0.5f);
+    }else{
+        glColor3ubv(trackRoad.getColor());
+    }
     for(int i = 0; i < trackPoints.size(); i++){
         ControlPoint fir = trackPoints[i];
         ControlPoint sec = trackPoints[(i + 1) % trackPoints.size()];
