@@ -101,7 +101,9 @@ class TrainWindow : public Fl_Double_Window {
         Fl_Value_Slider*	tension;
 
         Fl_Button*			HeadLightButton;
-        Fl_Button*			SunButtton;
+        Fl_Button*			SunButton;
+        Fl_Button*          PhysicButton;
+
         Fl_Browser*			TrackLineBrowser;
         Fl_Browser*			TrackRoadBrowser;
 
