@@ -194,6 +194,24 @@ TrainWindow(const int x, const int y)
 
         pty+=25;
 
+        TrackLineBrowser = new Fl_Browser(605,pty,120,60,"TrackLine Type");
+        TrackLineBrowser->type(2);		// select
+        TrackLineBrowser->callback((Fl_Callback*)damageCB,this);
+        TrackLineBrowser->add("TwoLine");
+        TrackLineBrowser->add("OneLine");
+        TrackLineBrowser->select(1);
+
+        pty += 70;
+
+        TrackRoadBrowser = new Fl_Browser(605,pty,120,60,"TrackRoad Type");
+        TrackRoadBrowser->type(2);		// select
+        TrackRoadBrowser->callback((Fl_Callback*)damageCB,this);
+        TrackRoadBrowser->add("Parallel Road");
+        TrackRoadBrowser->add("Just Road");
+        TrackRoadBrowser->select(1);
+
+        pty += 70;
+
         // TODO: add widgets for all of your fancier features here
 #ifdef EXAMPLE_SOLUTION
 		makeExampleWidgets(this,pty);

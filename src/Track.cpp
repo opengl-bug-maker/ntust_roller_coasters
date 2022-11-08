@@ -42,8 +42,10 @@ CTrack() : trainU(0)
     ComputePointsFunc[2] = &CTrack::BspLinePoints;
 
     DrawTrackLineFunc[0] = &CTrack::DrawTrackLineTwoLine;
+    DrawTrackLineFunc[1] = &CTrack::DrawTrackLineOneLine;
 
     DrawTrackRoadFunc[0] = &CTrack::DrawTrackRoadOneWood;
+    DrawTrackRoadFunc[1] = &CTrack::DrawTrackRoadRoadWood;
 }
 
 //****************************************************************************
@@ -266,8 +268,11 @@ void DrawCube(Pnt3f now, Pnt3f next, float cubeWidth) {
 void CTrack::draw(bool doingShadows, TrainWindow* tw) {
     t = tw;
     int ComputePointIndex = tw->splineBrowser->value() - 1;
-    int DrawTrackLineIndex = 0;
-    int DrawTrackRoadIndex = 0;
+    int DrawTrackLineIndex = tw->TrackLineBrowser->value() - 1;
+    int DrawTrackRoadIndex = tw->TrackRoadBrowser->value() - 1;
+    if(ComputePointIndex < 0) ComputePointIndex = 0;
+    if(DrawTrackLineIndex < 0) DrawTrackLineIndex = 0;
+    if(DrawTrackRoadIndex < 0) DrawTrackRoadIndex = 0;
 
     bool arcLengthVersion = tw->arcLength->value();
 
@@ -706,4 +711,33 @@ ObjInfoPack CTrack::GetTrainInfoPack(float trainU) const {
         virtualPoints[nowPos].orient,
         new GLubyte[]{0,0,0}
     );
+}
+
+void CTrack::DrawTrackLineOneLine(const vector<ControlPoint> &trackPoints, const bool &doingShadows, TrackLine &trackLine,
+                             const float &trackWidth) {
+    glBegin(GL_LINE_LOOP);
+    glColor3ubv(trackLine.getColor());
+    for(auto point : trackPoints){
+        glVertex3f(point.pos.x, point.pos.y, point.pos.z);
+    }
+    glEnd();
+
+}
+
+void
+CTrack::DrawTrackRoadRoadWood(const vector<ControlPoint> &trackPoints, const bool &doingShadows, TrackRoad &trackRoad,
+                              const float &trackWidth) {
+    glBegin(GL_QUAD_STRIP);
+    glColor3ubv(trackRoad.getColor());
+    for(int i = 0; i < trackPoints.size(); i++){
+        ControlPoint fir = trackPoints[i];
+        ControlPoint sec = trackPoints[(i + 1) % trackPoints.size()];
+        Pnt3f Cross = (sec.pos + fir.pos * -1) * fir.orient;
+        Cross.normalize();
+        Pnt3f f = fir.pos + Cross * trackWidth;
+        Pnt3f ff = fir.pos + Cross * -trackWidth;
+        glVertex3f(f.x, f.y, f.z);
+        glVertex3f(ff.x, ff.y, ff.z);
+    }
+    glEnd();
 }

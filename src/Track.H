@@ -86,9 +86,11 @@ class CTrack {
         void (CTrack::*DrawTrackLineFunc[3])(const vector<ControlPoint>&, const bool&, TrackLine&, const float&);
         void DrawTrackLineTwoLine(const vector<ControlPoint>& trackPoints, const bool& doingShadows, TrackLine& trackLine,const float& trackWidth);
         ObjInfoPack TrackTwoLine(const ControlPoint& fir, const ControlPoint& sec, const ControlPoint& trd, const float& trackWidth);
+        void DrawTrackLineOneLine(const vector<ControlPoint>& trackPoints, const bool& doingShadows, TrackLine& trackLine,const float& trackWidth);
 
         void (CTrack::*DrawTrackRoadFunc[3])(const vector<ControlPoint>&, const bool&, TrackRoad&,const float&);
         void DrawTrackRoadOneWood(const vector<ControlPoint>& trackPoints, const bool& doingShadows, TrackRoad& trackRoad,const float& trackWidth);
+        void DrawTrackRoadRoadWood(const vector<ControlPoint>& trackPoints, const bool& doingShadows, TrackRoad& trackRoad,const float& trackWidth);
         //
 	public:
 		// rather than have generic objects, we make a special case for these few

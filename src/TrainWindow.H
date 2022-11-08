@@ -102,6 +102,8 @@ class TrainWindow : public Fl_Double_Window {
 
         Fl_Button*			HeadLightButton;
         Fl_Button*			SunButtton;
+        Fl_Browser*			TrackLineBrowser;
+        Fl_Browser*			TrackRoadBrowser;
 
 #ifdef EXAMPLE_SOLUTION
 	ExampleWidgets ew;
