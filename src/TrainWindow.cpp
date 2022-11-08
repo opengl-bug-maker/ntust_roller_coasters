@@ -66,11 +66,15 @@ TrainWindow(const int x, const int y)
 		fb->callback((Fl_Callback*)forwCB,this);
 		Fl_Button* rb = new Fl_Button(670,pty,25,20,"@<<");
 		rb->callback((Fl_Callback*)backCB,this);
-		
-		arcLength = new Fl_Button(730,pty,65,20,"ArcLength");
-		togglify(arcLength,1);
-  
-		pty+=25;
+
+        arcLength = new Fl_Button(730,pty,65,20,"ArcLength");
+        togglify(arcLength,1);
+
+        pty+=25;
+        PhysicButton = new Fl_Button(730,pty,65,20,"Physic");
+        togglify(PhysicButton,1);
+
+        pty+=25;
 		speed = new Fl_Value_Slider(655,pty,140,20,"speed");
 		speed->range(0,10);
 		speed->value(2);
@@ -189,8 +193,8 @@ TrainWindow(const int x, const int y)
 
         HeadLightButton = new Fl_Button(605,pty,80,20,"HeadLight");
         togglify(HeadLightButton, 1);
-        SunButtton = new Fl_Button(695,pty,40,20,"Sun");
-        togglify(SunButtton, 1);
+        SunButton = new Fl_Button(695,pty,40,20,"Sun");
+        togglify(SunButton, 1);
 
         pty+=25;
 

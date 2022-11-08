@@ -333,7 +333,7 @@ void TrainView::draw()
     else
         glDisable(GL_LIGHT1);
 
-    if(tw->SunButtton->value())
+    if(tw->SunButton->value())
         glEnable(GL_LIGHT0);
     else
         glDisable(GL_LIGHT0);
@@ -366,7 +366,8 @@ void TrainView::draw()
     glEnable(GL_LIGHTING);
 	setupFloor();
 //	glDisable(GL_LIGHTING);
-	drawFloor(200,40);
+//	drawFloor(200,40);
+
 
 
 	//*********************************************************************
