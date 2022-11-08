@@ -42,7 +42,7 @@
 //========================================================================
 TrainWindow::
 TrainWindow(const int x, const int y) 
-	: Fl_Double_Window(x,y,800,600,"Train and Roller Coaster")
+	: Fl_Double_Window(x,y,900,600,"Train and Roller Coaster")
 //========================================================================
 {
 	// make all of the widgets
@@ -288,16 +288,24 @@ advanceTrain(float dir)
 	if (world.trainU < 0) world.trainU += nct;
 #endif
 
-    if (arcLength->value()) {
-//        float vel = ew.physics->value() ? physicsSpeed(this) : dir * (float)speed->value();
-        float vel = dir * (float)speed->value();
-        //todo : v to version arcLen
-//        m_Track.trainU +=  dir * ((float)speed->value() * .1f);
-//        m_Track.trainU +=  dir * ((float)m_Track.getArcV() * (float)speed->value() * .1f);
-        m_Track.trainU +=  dir * ((float)m_Track.getPhysicsV(m_Track.trainU) * (float)speed->value() * .1f);
-    } else {
-        m_Track.trainU +=  dir * ((float)speed->value() * .1f);
+    if(PhysicButton->value() && arcLength->value()) {
+        m_Track.trainU += dir * ((float) m_Track.getPhysicsV(m_Track.trainU) * (float) speed->value() * .1f);
+    }else if(arcLength->value()){
+        m_Track.trainU +=  dir * ((float)speed->value() * m_Track.virtualPoints.size() / m_Track.points.size() * .1f);
+    }else{
+        m_Track.trainU +=  dir * ((float)speed->value() * .5f);
     }
+
+//    if (arcLength->value()) {
+////        float vel = ew.physics->value() ? physicsSpeed(this) : dir * (float)speed->value();
+//        float vel = dir * (float)speed->value();
+//        //todo : v to version arcLen
+////        m_Track.trainU +=  dir * ((float)speed->value() * .1f);
+////        m_Track.trainU +=  dir * ((float)m_Track.getArcV() * (float)speed->value() * .1f);
+//        m_Track.trainU +=  dir * ((float)m_Track.getPhysicsV(m_Track.trainU) * (float)speed->value() * .1f);
+//    } else {
+//        m_Track.trainU +=  dir * ((float)speed->value() * .1f);
+//    }
 
     float nct = static_cast<float>(arcLength->value() ? m_Track.virtualPoints.size() : m_Track.virtualPoints.size());
     if (m_Track.trainU > nct) m_Track.trainU -= nct;
