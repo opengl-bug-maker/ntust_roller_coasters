@@ -68,13 +68,15 @@ void ObjInfoPack::setColor(GLubyte *color) {
     Color = color;
 }
 
+static GLubyte BLACK[3] = {0,0,0};
+
 ObjInfoPack::ObjInfoPack() {
     Pos = Pnt3f(0, 0, 0);
     Size = Pnt3f(1, 1, 1);
 //    Rotate = Pnt3f(0, 0, 0);
     Top = Pnt3f(0, 1, 0);
     Front = Pnt3f(1, 0, 0);
-    Color = new GLubyte[]{0, 0, 0};
+    Color = BLACK;
 }
 
 ObjInfoPack::~ObjInfoPack() {
