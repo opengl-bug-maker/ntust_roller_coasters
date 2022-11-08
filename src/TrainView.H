@@ -50,6 +50,7 @@ class CTrack;
 
 // this uses the old ArcBall Code
 #include "Utilities/ArcBallCam.H"
+#include "Obj/Floor.h"
 
 class TrainView : public Fl_Gl_Window
 {

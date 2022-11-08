@@ -377,6 +377,8 @@ void TrainView::draw()
 	glEnable(GL_LIGHTING);
 	setupObjects();
 
+    Floor floor;
+    floor.Draw(false);
 
 	drawStuff();
 
